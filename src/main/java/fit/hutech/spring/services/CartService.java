@@ -1,0 +1,89 @@
+package fit.hutech.spring.services;
+
+import fit.hutech.spring.daos.Cart;
+import fit.hutech.spring.daos.Item;
+import fit.hutech.spring.entities.Invoice;
+import fit.hutech.spring.entities.ItemInvoice;
+import fit.hutech.spring.repositories.IBookRepository;
+import fit.hutech.spring.repositories.IInvoiceRepository;
+import fit.hutech.spring.repositories.IItemInvoiceRepository;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
+@Transactional(isolation = Isolation.SERIALIZABLE, rollbackFor = {Exception.class, Throwable.class})
+public class CartService {
+    
+    private static final String CART_SESSION_KEY = "cart";
+
+    // Inject các Repository cần thiết để thao tác với DB
+    private final IInvoiceRepository invoiceRepository;
+    private final IItemInvoiceRepository itemInvoiceRepository;
+    private final IBookRepository bookRepository;
+
+    public Cart getCart(@NotNull HttpSession session) {
+        return Optional.ofNullable((Cart) session.getAttribute(CART_SESSION_KEY))
+                .orElseGet(() -> {
+                    Cart cart = new Cart();
+                    session.setAttribute(CART_SESSION_KEY, cart);
+                    return cart;
+                });
+    }
+
+    public void updateCart(@NotNull HttpSession session, Cart cart) {
+        session.setAttribute(CART_SESSION_KEY, cart);
+    }
+
+    public void removeCart(@NotNull HttpSession session) {
+        session.removeAttribute(CART_SESSION_KEY);
+    }
+
+    public int getSumQuantity(@NotNull HttpSession session) {
+        return getCart(session).getCartItems().stream()
+                .mapToInt(Item::getQuantity)
+                .sum();
+    }
+
+    public double getSumPrice(@NotNull HttpSession session) {
+        return getCart(session).getCartItems().stream()
+                .mapToDouble(item -> item.getPrice() * item.getQuantity())
+                .sum();
+    }
+
+    // === PHƯƠNG THỨC LƯU GIỎ HÀNG (SAVE CART) ===
+    //
+    public void saveCart(@NotNull HttpSession session) {
+        var cart = getCart(session);
+        if (cart.getCartItems().isEmpty()) return;
+
+        // 1. Tạo và lưu hóa đơn (Invoice)
+        var invoice = new Invoice();
+        invoice.setInvoiceDate(new Date(new Date().getTime()));
+        invoice.setPrice(getSumPrice(session));
+        invoiceRepository.save(invoice);
+
+        // 2. Duyệt qua từng item trong giỏ để lưu chi tiết hóa đơn (ItemInvoice)
+        cart.getCartItems().forEach(item -> {
+            var items = new ItemInvoice();
+            items.setInvoice(invoice);
+            items.setQuantity(item.getQuantity());
+            
+            // Tìm sách theo ID, nếu không thấy thì báo lỗi
+            items.setBook(bookRepository.findById(item.getBookId())
+                    .orElseThrow());
+            
+            itemInvoiceRepository.save(items);
+        });
+
+        // 3. Xóa giỏ hàng sau khi đã thanh toán thành công
+        removeCart(session);
+    }
+}
