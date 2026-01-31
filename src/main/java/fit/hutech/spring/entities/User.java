@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.hibernate.Hibernate;
 import org.hibernate.validator.constraints.Length;
@@ -12,7 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import fit.hutech.spring.validators.annotations.ValidUsername;
+import fit.hutech.spring.Validator.annotations.ValidUsername;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -32,6 +31,7 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -40,6 +40,7 @@ import lombok.ToString;
 @ToString
 @AllArgsConstructor
 @Builder
+@NoArgsConstructor
 @Entity
 @Table(name = "user")
 public class User implements UserDetails {
@@ -73,9 +74,7 @@ public class User implements UserDetails {
     private String provider;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role", 
-               joinColumns = @JoinColumn(name = "user_id"), 
-               inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     @Builder.Default
     private Set<Role> roles = new HashSet<>();
 
@@ -125,8 +124,10 @@ public class User implements UserDetails {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        if (this == o)
+            return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o))
+            return false;
         User user = (User) o;
         return getId() != null && Objects.equals(getId(), user.getId());
     }

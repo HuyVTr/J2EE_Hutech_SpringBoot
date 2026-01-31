@@ -1,6 +1,7 @@
 package fit.hutech.spring;
 
 import fit.hutech.spring.entities.Book;
+import fit.hutech.spring.entities.Category;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,13 +13,14 @@ public class AppConfig {
 
     @Bean
     public List<Book> getBooks() {
-        // Mình đã thêm <Book> vào new ArrayList<>() để đảm bảo code không bị lỗi type inference với 'var'
         var books = new ArrayList<Book>();
-
-        books.add(new Book(1L, "Lập trình Web Spring Framework", "Ánh Nguyễn", 29.99, "Công nghệ thông tin"));
-        books.add(new Book(2L, "Lập trình ứng dụng Java", "Huy Cường", 45.63, "Công nghệ thông tin"));
-        books.add(new Book(3L, "Lập trình Web Spring Boot", "Xuân Nhân", 12., "Công nghệ thông tin"));
-        books.add(new Book(4L, "Lập trình Web Spring MVC", "Ánh Nguyễn", .12, "Công nghệ thông tin"));
+        Category category = new Category();
+        category.setId(1L);
+        category.setName("Công nghệ thông tin");
+        books.add(new Book(1L, "Lập trình Web Spring Framework", "Ánh Nguyễn", 29.99, category, new ArrayList<>()));
+        books.add(new Book(2L, "Lập trình ứng dụng Java", "Huy Cường", 45.63, category, new ArrayList<>()));
+        books.add(new Book(3L, "Lập trình Web Spring Boot", "Xuân Nhân", 12., category, new ArrayList<>()));
+        books.add(new Book(4L, "Lập trình Web Spring MVC", "Ánh Nguyễn", .12, category, new ArrayList<>()));
 
         return books;
     }

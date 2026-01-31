@@ -2,7 +2,7 @@ package fit.hutech.spring.utils;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 
 import fit.hutech.spring.services.OAuthService;
 import fit.hutech.spring.services.UserService;
@@ -38,8 +39,7 @@ public class SecurityConfig {
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
-        var auth = new DaoAuthenticationProvider();
-        auth.setUserDetailsService(userDetailsService());
+        var auth = new DaoAuthenticationProvider(userDetailsService());
         auth.setPasswordEncoder(passwordEncoder());
         return auth;
     }
@@ -50,13 +50,15 @@ public class SecurityConfig {
                         // Cho phép truy cập công khai
                         .requestMatchers("/css/**", "/js/**", "/", "/oauth/**", "/register", "/error")
                         .permitAll()
-                        // Phân quyền ADMIN
-                        .requestMatchers("/books/edit/**", "/books/delete/**")
+                        // Phân quyền ADMIN cho các thao tác quản trị
+                        .requestMatchers("/books/edit/**", "/books/add", "/books/delete/**")
                         .hasAnyAuthority("ADMIN")
-                        // Phân quyền ADMIN và USER
-                        .requestMatchers("/books", "/books/add", "/api/**", "/cart", "/cart/**")
+                        // Cấu hình phân quyền cho API theo hình 8.1
+                        .requestMatchers("/api/**")
                         .hasAnyAuthority("ADMIN", "USER")
-                        // Các yêu cầu khác yêu cầu đăng nhập
+                        // Phân quyền cho người dùng xem sách và giỏ hàng
+                        .requestMatchers("/books", "/cart", "/cart/**")
+                        .hasAnyAuthority("ADMIN", "USER")
                         .anyRequest().authenticated())
                 .logout(logout -> logout
                         .logoutUrl("/logout")
@@ -76,6 +78,7 @@ public class SecurityConfig {
                         .failureUrl("/login?error")
                         .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint
                                 .userService(oAuthService))
+                        // Tích hợp Success Handler lưu người dùng OAuth vào DB
                         .successHandler((request, response, authentication) -> {
                             var oidcUser = (DefaultOidcUser) authentication.getPrincipal();
                             userService.saveOauthUser(oidcUser.getEmail(), oidcUser.getName());
@@ -88,7 +91,8 @@ public class SecurityConfig {
                         .tokenValiditySeconds(24 * 60 * 60)
                         .userDetailsService(userDetailsService()))
                 .exceptionHandling(exceptionHandling -> exceptionHandling
-                        .accessDeniedPage("/403")) // Điều hướng khi bị từ chối truy cập
+                        // Cấu hình trang lỗi 403 khi bị từ chối truy cập
+                        .accessDeniedPage("/403")) 
                 .sessionManagement(sessionManagement -> sessionManagement
                         .maximumSessions(1)
                         .expiredUrl("/login"))

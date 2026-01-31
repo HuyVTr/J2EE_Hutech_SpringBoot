@@ -1,6 +1,6 @@
-package fit.hutech.spring.validators.annotations;
+package fit.hutech.spring.Validator.annotations;
 
-import fit.hutech.spring.validators.ValidUsernameValidator;
+import fit.hutech.spring.Validator.ValidUsernameValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 

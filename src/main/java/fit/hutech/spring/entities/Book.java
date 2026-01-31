@@ -7,7 +7,7 @@ import java.util.Objects;
 
 import org.hibernate.Hibernate;
 
-import fit.hutech.spring.validators.annotations.ValidCategoryId;
+import fit.hutech.spring.Validator.annotations.ValidCategoryId;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

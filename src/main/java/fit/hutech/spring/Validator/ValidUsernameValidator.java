@@ -1,7 +1,7 @@
-package fit.hutech.spring.validators;
+package fit.hutech.spring.Validator;
 
 import fit.hutech.spring.services.UserService;
-import fit.hutech.spring.validators.annotations.ValidUsername;
+import fit.hutech.spring.Validator.annotations.ValidUsername;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;

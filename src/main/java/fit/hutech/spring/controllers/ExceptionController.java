@@ -1,28 +1,23 @@
 package fit.hutech.spring.controllers;
 
-import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.constraints.NotNull; // Thêm import này để @NotNull hoạt động
-import org.springframework.boot.web.servlet.error.ErrorController;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-import java.util.Optional;
+@ControllerAdvice
+public class ExceptionController {
 
-@Controller
-@RequestMapping("/error")
-public class ExceptionController implements ErrorController {
+    @ExceptionHandler(NoHandlerFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public String handleNotFound(NoHandlerFoundException ex) {
+        return "error/404";
+    }
 
-    @GetMapping
-    public String handleError(@NotNull HttpServletRequest request) {
-        return Optional.ofNullable(request.getAttribute(
-                        RequestDispatcher.ERROR_STATUS_CODE))
-                .map(status -> Integer.parseInt(status.toString()))
-                .filter(status -> status == 404
-                        || status == 500
-                        || status == 403)
-                .map(status -> "error/" + status)
-                .orElse(null);
+    @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public String handleInternalError(Exception ex) {
+        return "error/500";
     }
 }

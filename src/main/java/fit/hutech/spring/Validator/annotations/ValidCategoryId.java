@@ -1,6 +1,6 @@
-package fit.hutech.spring.validators.annotations;
+package fit.hutech.spring.Validator.annotations;
 
-import fit.hutech.spring.validators.ValidCategoryIdValidator;
+import fit.hutech.spring.Validator.CategoryIdValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 import java.lang.annotation.Documented;
@@ -13,7 +13,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Target({TYPE, FIELD})
 @Retention(RUNTIME)
-@Constraint(validatedBy = ValidCategoryIdValidator.class)
+@Constraint(validatedBy = CategoryIdValidator.class)
 @Documented
 public @interface ValidCategoryId {
     String message() default "Invalid Category Id";
