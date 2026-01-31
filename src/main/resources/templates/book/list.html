@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -17,7 +19,7 @@
             <div class="col-md-12">
                 <nav class="navbar navbar-light">
                     <div class="container-fluid">
-                        <h2>My Book List</h2>
+                        <h1>My Book List</h1>
                         <form class="d-flex" th:action="@{/books/search}" method="get">
                             <input class="form-control me-2" type="search" 
                                    placeholder="Search" aria-label="Search" name="keyword">
@@ -46,10 +48,13 @@
                     <td th:text="${book.getAuthor()}"></td>
                     <td th:text="${book.getPrice()}"></td>
                     <td th:text="${book.getCategory().getName()}"></td>
-                    <td style="white-space: nowrap;"> <a class="btn btn-primary"
+                    <td style="white-space: nowrap;">
+                        <a class="btn btn-primary"
+                           sec:authorize="hasAnyAuthority('ADMIN')"
                            th:href="@{/books/edit/{id}(id=${book.getId()})}">Edit</a>
                         
                         <a class="btn btn-danger"
+                           sec:authorize="hasAnyAuthority('ADMIN')"
                            th:href="@{/books/delete/{id}(id=${book.getId()})}"
                            onclick="return confirm('Are you sure you want to delete this book?')">Delete</a>
                         

@@ -1,9 +1,5 @@
 package fit.hutech.spring.utils;
 
-import fit.hutech.spring.services.OAuthService; // Import mới từ hình ảnh
-import fit.hutech.spring.services.UserService;
-import jakarta.validation.constraints.NotNull;
-import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -13,13 +9,18 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser; // Import mới
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.web.SecurityFilterChain;
+
+import fit.hutech.spring.services.OAuthService;
+import fit.hutech.spring.services.UserService;
+import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true, jsr250Enabled = true)
-@RequiredArgsConstructor // Thêm để inject oAuthService và userService
+@RequiredArgsConstructor
 public class SecurityConfig {
 
     private final OAuthService oAuthService;
@@ -27,7 +28,7 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return new UserService();
+        return userService;
     }
 
     @Bean
@@ -46,59 +47,52 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(@NotNull HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/css/**", "/js/**", "/", "/oauth/**", "/register", "/error") // Thêm /oauth/**
-                .permitAll()
-                .requestMatchers("/books/edit/**", "/books/add", "/books/delete/**")
-                .authenticated()
-                .requestMatchers("/books", "/cart", "/cart/**")
-                .authenticated()
-                .requestMatchers("/api/**")
-                .authenticated()
-                .anyRequest().authenticated()
-            )
-            .logout(logout -> logout
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/login")
-                .deleteCookies("JSESSIONID")
-                .invalidateHttpSession(true)
-                .clearAuthentication(true)
-                .permitAll()
-            )
-            .formLogin(formLogin -> formLogin
-                .loginPage("/login")
-                .loginProcessingUrl("/login")
-                .defaultSuccessUrl("/")
-                .failureUrl("/login?error")
-                .permitAll()
-            )
-            // Tích hợp OAuth2 Login từ hình ảnh
-            .oauth2Login(oauth2Login -> oauth2Login
-                .loginPage("/login")
-                .failureUrl("/login?error")
-                .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint
-                    .userService(oAuthService)
-                )
-                .successHandler((request, response, authentication) -> {
-                    var oidcUser = (DefaultOidcUser) authentication.getPrincipal();
-                    userService.saveOauthUser(oidcUser.getEmail(), oidcUser.getName());
-                    response.sendRedirect("/");
-                })
-                .permitAll()
-            )
-            .rememberMe(rememberMe -> rememberMe
-                .key("hutech")
-                .rememberMeCookieName("hutech")
-                .tokenValiditySeconds(24 * 60 * 60)
-                .userDetailsService(userDetailsService())
-            )
-            .exceptionHandling(exceptionHandling -> exceptionHandling
-                .accessDeniedPage("/403")
-            )
-            .sessionManagement(sessionManagement -> sessionManagement
-                .maximumSessions(1)
-                .expiredUrl("/login")
-            )
-            .httpBasic(httpBasic -> httpBasic.realmName("hutech"))
-            .build();
+                        // Cho phép truy cập công khai
+                        .requestMatchers("/css/**", "/js/**", "/", "/oauth/**", "/register", "/error")
+                        .permitAll()
+                        // Phân quyền ADMIN
+                        .requestMatchers("/books/edit/**", "/books/delete/**")
+                        .hasAnyAuthority("ADMIN")
+                        // Phân quyền ADMIN và USER
+                        .requestMatchers("/books", "/books/add", "/api/**", "/cart", "/cart/**")
+                        .hasAnyAuthority("ADMIN", "USER")
+                        // Các yêu cầu khác yêu cầu đăng nhập
+                        .anyRequest().authenticated())
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login")
+                        .deleteCookies("JSESSIONID")
+                        .invalidateHttpSession(true)
+                        .clearAuthentication(true)
+                        .permitAll())
+                .formLogin(formLogin -> formLogin
+                        .loginPage("/login")
+                        .loginProcessingUrl("/login")
+                        .defaultSuccessUrl("/")
+                        .failureUrl("/login?error")
+                        .permitAll())
+                .oauth2Login(oauth2Login -> oauth2Login
+                        .loginPage("/login")
+                        .failureUrl("/login?error")
+                        .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint
+                                .userService(oAuthService))
+                        .successHandler((request, response, authentication) -> {
+                            var oidcUser = (DefaultOidcUser) authentication.getPrincipal();
+                            userService.saveOauthUser(oidcUser.getEmail(), oidcUser.getName());
+                            response.sendRedirect("/");
+                        })
+                        .permitAll())
+                .rememberMe(rememberMe -> rememberMe
+                        .key("hutech")
+                        .rememberMeCookieName("hutech")
+                        .tokenValiditySeconds(24 * 60 * 60)
+                        .userDetailsService(userDetailsService()))
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .accessDeniedPage("/403")) // Điều hướng khi bị từ chối truy cập
+                .sessionManagement(sessionManagement -> sessionManagement
+                        .maximumSessions(1)
+                        .expiredUrl("/login"))
+                .httpBasic(httpBasic -> httpBasic.realmName("hutech"))
+                .build();
     }
 }

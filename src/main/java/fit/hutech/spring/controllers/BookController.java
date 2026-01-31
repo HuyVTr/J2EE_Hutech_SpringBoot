@@ -54,12 +54,14 @@ public class BookController {
             @RequestParam(defaultValue = "20") Integer pageSize,
             @RequestParam(defaultValue = "id") String sortBy) {
 
-        // Lưu ý: Cần đảm bảo BookService đã có phương thức searchBook(String keyword)
-        model.addAttribute("books", bookService.searchBook(keyword));
+        // Tối ưu: Gọi service 1 lần và lưu vào biến thay vì gọi 2 lần
+        var searchResults = bookService.searchBook(keyword);
+        model.addAttribute("books", searchResults);
 
         model.addAttribute("currentPage", pageNo);
-        long totalSearchItems = bookService.searchBook(keyword).size();
-        model.addAttribute("totalPages", (int) Math.ceil((double) totalSearchItems / pageSize) - 1);
+        int totalSearchItems = searchResults.size();
+        model.addAttribute("totalPages",
+                totalSearchItems > 0 ? (int) Math.ceil((double) totalSearchItems / pageSize) - 1 : 0);
 
         model.addAttribute("categories", categoryService.getAllCategories());
         return "book/list";

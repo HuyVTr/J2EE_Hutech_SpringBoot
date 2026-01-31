@@ -6,7 +6,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder; // Import theo ảnh, dù logic mã hóa nằm ở Service
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -36,6 +35,7 @@ public class UserController {
     public String register(@Valid @ModelAttribute("user") User user,
                            @NotNull BindingResult bindingResult,
                            Model model) {
+        // Kiểm tra lỗi validation
         if (bindingResult.hasErrors()) {
             var errors = bindingResult.getAllErrors()
                     .stream()
@@ -44,9 +44,13 @@ public class UserController {
             model.addAttribute("errors", errors);
             return "user/register";
         }
-        
-        // Lưu user vào cơ sở dữ liệu (logic mã hóa mật khẩu đã được xử lý bên UserService)
+
+        // Lưu user vào cơ sở dữ liệu
         userService.save(user);
+        
+        // Tích hợp từ hình ảnh: Gán role mặc định cho user sau khi đăng ký
+        userService.setDefaultRole(user.getUsername());
+        
         return "redirect:/login";
     }
 }
