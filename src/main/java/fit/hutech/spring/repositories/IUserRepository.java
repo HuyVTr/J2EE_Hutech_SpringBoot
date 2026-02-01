@@ -10,4 +10,6 @@ import fit.hutech.spring.entities.User;
 @Repository
 public interface IUserRepository extends JpaRepository<User, Long> {
     Optional<User> findByUsername(String username);
+    Optional<User> findByEmail(String email);
+    Optional<User> findByPhone(String phone);
 }

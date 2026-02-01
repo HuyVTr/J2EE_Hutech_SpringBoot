@@ -57,7 +57,7 @@ public class Book {
     @Positive(message = "Price must be greater than 0")
     private Double price;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     @ValidCategoryId
     @ToString.Exclude
@@ -67,6 +67,7 @@ public class Book {
     // Thiết lập mối quan hệ 1-n với ItemInvoice
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
     @ToString.Exclude
+    @Builder.Default
     private List<ItemInvoice> itemInvoices = new ArrayList<>();
     // ===========================
 

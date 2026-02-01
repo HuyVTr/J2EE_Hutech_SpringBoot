@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,9 +9,10 @@
     <th:block th:replace="~{layout::link-css}"></th:block>
     <th:block th:replace="~{layout::custom-css}"></th:block>
 </head>
+
 <body>
     <th:block th:replace="~{layout::header}"></th:block>
-    
+
     <div class="container">
         <nav class="navbar navbar-light bg-light">
             <div class="container-fluid">
@@ -19,8 +21,26 @@
                 </a>
             </div>
         </nav>
+
+        <!-- Hiển thị danh sách sách -->
+        <div class="row" th:if="${books != null}">
+            <div class="col-md-3 mb-3" th:each="book : ${books}">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${book.title}">Tên sách</h5>
+                        <p class="card-text">Tác giả: <span th:text="${book.author}">Tác giả</span></p>
+                        <p class="card-text text-danger" th:text="${book.price} + ' VNĐ'">Giá</p>
+                    </div>
+                    <div class="card-footer bg-transparent border-top-0">
+                        <a href="#" class="btn btn-primary btn-sm">Chi tiết</a>
+                        <a th:href="@{/cart/add/{id}(id=${book.id})}" class="btn btn-success btn-sm">Thêm giỏ</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <th:block th:replace="~{layout::footer}"></th:block>
 </body>
+
 </html>

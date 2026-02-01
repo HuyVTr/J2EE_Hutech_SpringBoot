@@ -1,0 +1,48 @@
+ :: Spring Boot ::                (v4.0.2)
+
+2026-02-01T20:48:05.941+07:00  INFO 12312 --- [  restartedMain] fit.hutech.spring.Application            
+: Starting Application using Java 21.0.7 with PID 12312 (D:\DoAn\J2EE\BaiTapJ2EE\spring\target\classes started by PC in D:\DoAn\J2EE\BaiTapJ2EE)
+2026-02-01T20:48:05.941+07:00  INFO 12312 --- [  restartedMain] fit.hutech.spring.Application            
+: No active profile set, falling back to 1 default profile: "default"
+2026-02-01T20:48:06.321+07:00  INFO 12312 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-02-01T20:48:06.355+07:00  INFO 12312 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 32 ms. Found 6 JPA repository interfaces.
+2026-02-01T20:48:06.519+07:00  INFO 12312 --- [  restartedMain] o.s.boot.tomcat.TomcatWebServer          
+: Tomcat initialized with port 8080 (http)
+2026-02-01T20:48:06.520+07:00  INFO 12312 --- [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-02-01T20:48:06.521+07:00  INFO 12312 --- [  restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.15]
+2026-02-01T20:48:06.570+07:00  INFO 12312 --- [  restartedMain] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 627 ms
+2026-02-01T20:48:06.667+07:00  INFO 12312 --- [  restartedMain] org.hibernate.orm.jpa                    
+: HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-02-01T20:48:06.692+07:00  INFO 12312 --- [  restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-02-01T20:48:06.693+07:00  INFO 12312 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Starting...
+2026-02-01T20:48:06.702+07:00  INFO 12312 --- [  restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-4 - Added connection com.mysql.cj.jdbc.ConnectionImpl@468cb0a5
+2026-02-01T20:48:06.702+07:00  INFO 12312 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-4 - Start completed.
+2026-02-01T20:48:06.703+07:00  INFO 12312 --- [  restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+        Database JDBC URL [jdbc:mysql://localhost:3306/bookstore]
+        Database driver: MySQL Connector/J
+        Database dialect: MySQLDialect
+        Database version: 8.0.30
+        Default catalog/schema: bookstore/undefined
+        Autocommit mode: undefined/unknown
+        Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+        JDBC fetch size: none
+        Pool: DataSourceConnectionProvider
+        Minimum pool size: undefined/unknown
+        Maximum pool size: undefined/unknown
+2026-02-01T20:48:06.806+07:00  INFO 12312 --- [  restartedMain] org.hibernate.orm.core                   
+: HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-02-01T20:48:06.826+07:00  INFO 12312 --- [  restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-02-01T20:48:07.040+07:00  INFO 12312 --- [  restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name userService
+2026-02-01T20:48:07.299+07:00  INFO 12312 --- [  restartedMain] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+2026-02-01T20:48:07.319+07:00  INFO 12312 --- [  restartedMain] o.s.boot.tomcat.TomcatWebServer          
+: Tomcat started on port 8080 (http) with context path '/'
+2026-02-01T20:48:07.323+07:00  INFO 12312 --- [  restartedMain] fit.hutech.spring.Application            
+: Started Application in 1.401 seconds (process running for 161.185)
+Database connection successful. Roles initialized.
+2026-02-01T20:48:07.377+07:00  INFO 12312 --- [  restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation unchanged
+2026-02-01T20:48:28.199+07:00  INFO 12312 --- [nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-02-01T20:48:28.199+07:00  INFO 12312 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-02-01T20:48:28.201+07:00  INFO 12312 --- [nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2026-02-01T20:48:32.106+07:00  WARN 12312 --- [nio-8080-exec-3] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico for request '/favicon.ico'.]
+2026-02-01T20:48:35.576+07:00  WARN 12312 --- [nio-8080-exec-4] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico for request '/favicon.ico'.]
+2026-02-01T20:48:36.369+07:00  WARN 12312 --- [nio-8080-exec-9] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource favicon.ico for request '/favicon.ico'.]

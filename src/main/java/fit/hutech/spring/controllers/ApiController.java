@@ -1,9 +1,13 @@
 package fit.hutech.spring.controllers;
 
+import fit.hutech.spring.daos.Cart;
+import fit.hutech.spring.daos.Item;
+import fit.hutech.spring.entities.Category;
 import fit.hutech.spring.services.BookService;
 import fit.hutech.spring.services.CartService;
 import fit.hutech.spring.services.CategoryService;
 import fit.hutech.spring.viewmodels.BookGetVm;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,9 +36,10 @@ public class ApiController {
 
     @GetMapping("/books/id/{id}")
     public ResponseEntity<BookGetVm> getBookById(@PathVariable Long id) {
-        return ResponseEntity.ok(bookService.getBookById(id)
+        return bookService.getBookById(id)
                 .map(BookGetVm::from)
-                .orElse(null));
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/books/{id}")
@@ -49,5 +54,46 @@ public class ApiController {
                 .stream()
                 .map(BookGetVm::from)
                 .toList());
+    }
+    @GetMapping("/categories")
+    public ResponseEntity<List<Category>> getAllCategories() {
+        return ResponseEntity.ok(categoryService.getAllCategories());
+    }
+
+    // Cart APIs
+    @GetMapping("/cart")
+    public ResponseEntity<Cart> getCart(HttpSession session) {
+        return ResponseEntity.ok(cartService.getCart(session));
+    }
+
+    @PostMapping("/cart/add/{bookId}")
+    public ResponseEntity<Cart> addToCart(@PathVariable Long bookId, @RequestParam(defaultValue = "1") int quantity, HttpSession session) {
+        var cart = cartService.getCart(session);
+        var book = bookService.getBookById(bookId).orElseThrow(() -> new IllegalArgumentException("Book not found"));
+        cart.addItems(new Item(book.getId(), book.getTitle(), book.getPrice(), quantity));
+        cartService.updateCart(session, cart);
+        return ResponseEntity.ok(cart);
+    }
+
+    @PutMapping("/cart/update/{bookId}")
+    public ResponseEntity<Cart> updateCart(@PathVariable Long bookId, @RequestParam int quantity, HttpSession session) {
+        var cart = cartService.getCart(session);
+        cart.updateItems(bookId, quantity);
+        cartService.updateCart(session, cart);
+        return ResponseEntity.ok(cart);
+    }
+
+    @DeleteMapping("/cart/remove/{bookId}")
+    public ResponseEntity<Cart> removeFromCart(@PathVariable Long bookId, HttpSession session) {
+        var cart = cartService.getCart(session);
+        cart.removeItems(bookId);
+        cartService.updateCart(session, cart);
+        return ResponseEntity.ok(cart);
+    }
+
+    @DeleteMapping("/cart/clear")
+    public ResponseEntity<Void> clearCart(HttpSession session) {
+        cartService.removeCart(session);
+        return ResponseEntity.ok().build();
     }
 }

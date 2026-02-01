@@ -31,6 +31,14 @@ public class UserService implements UserDetailsService {
         return userRepository.findByUsername(username);
     }
 
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    public Optional<User> findByPhone(String phone) {
+        return userRepository.findByPhone(phone);
+    }
+
     public void save(User user) {
         userRepository.save(user);
     }
@@ -43,12 +51,15 @@ public class UserService implements UserDetailsService {
     }
 
     public void saveOauthUser(String email, String username) {
-        if (userRepository.findByUsername(username).isPresent())
+        if (userRepository.findByUsername(username).isPresent() ||
+                userRepository.findByEmail(email).isPresent())
             return;
         var user = new User();
         user.setUsername(username);
         user.setEmail(email);
         user.setPassword("OAUTH2_PROVIDER"); // Mật khẩu giả cho OAuth
+        user.setProvider("GOOGLE");
         userRepository.save(user);
+        setDefaultRole(username);
     }
 }

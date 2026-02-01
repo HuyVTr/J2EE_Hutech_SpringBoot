@@ -25,6 +25,7 @@ public class Invoice {
     private Long id;
 
     @Column(name = "invoice_date")
+    @Builder.Default
     private Date invoiceDate = new Date();
 
     @Column(name = "total")
@@ -41,6 +42,7 @@ public class Invoice {
 
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL)
     @ToString.Exclude
+    @Builder.Default
     private List<ItemInvoice> itemInvoices = new ArrayList<>();
 
     @Override
