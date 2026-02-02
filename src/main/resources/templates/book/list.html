@@ -10,19 +10,21 @@
     <th:block th:replace="~{layout::link-css}"></th:block>
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
     <th:block th:replace="~{layout::header}"></th:block>
 
-    <div class="container">
+    <div class="container flex-grow-1">
         <div class="row">
             <div class="col-md-12">
                 <nav class="navbar navbar-light">
                     <div class="container-fluid">
                         <h1>My Book List</h1>
-                        <form class="d-flex" th:action="@{/books/search}" method="get">
+                        <form id="search-form" class="d-flex">
                             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
                                 name="keyword" required>
                             <button class="btn btn-outline-success" type="submit">Search</button>
+                            <button class="btn btn-outline-secondary ms-2" type="button"
+                                id="refresh-btn">Refresh</button>
                         </form>
                     </div>
                 </nav>
