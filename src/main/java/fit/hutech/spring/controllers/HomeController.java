@@ -25,4 +25,9 @@ public class HomeController {
     public String contact() {
         return "home/contact";
     }
+
+    @GetMapping("/403")
+    public String accessDenied() {
+        return "error/403";
+    }
 }

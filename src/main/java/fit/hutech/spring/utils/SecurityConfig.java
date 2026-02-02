@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -37,20 +38,25 @@ public class SecurityConfig {
 
         @Bean
         public SecurityFilterChain securityFilterChain(@NotNull HttpSecurity http) throws Exception {
-                return http.authorizeHttpRequests(auth -> auth
-                                // Cho phép truy cập công khai
-                                .requestMatchers("/css/**", "/js/**", "/", "/oauth/**", "/register", "/error")
-                                .permitAll()
-                                // Phân quyền ADMIN cho các thao tác quản trị
-                                .requestMatchers("/books/edit/**", "/books/add", "/books/delete/**")
-                                .hasAnyAuthority("ADMIN")
-                                // Cấu hình phân quyền cho API theo hình 8.1
-                                .requestMatchers("/api/**")
-                                .hasAnyAuthority("ADMIN", "USER")
-                                // Phân quyền cho người dùng xem sách và giỏ hàng
-                                .requestMatchers("/books", "/cart", "/cart/**")
-                                .hasAnyAuthority("ADMIN", "USER")
-                                .anyRequest().authenticated())
+                return http.csrf(csrf -> csrf.disable()) // Tắt CSRF để API gọi được
+                                .authorizeHttpRequests(auth -> auth
+                                                // Cho phép truy cập công khai
+                                                .requestMatchers("/css/**", "/js/**", "/", "/oauth/**", "/register",
+                                                                "/error")
+                                                .permitAll()
+                                                // Phân quyền ADMIN cho các thao tác quản trị
+                                                .requestMatchers("/books/edit/**", "/books/add", "/books/delete/**")
+                                                .hasAnyAuthority("ADMIN")
+                                                // Cấu hình phân quyền cho API: GET cho tất cả, còn lại chỉ ADMIN
+                                                .requestMatchers(HttpMethod.GET, "/api/**")
+                                                .hasAnyAuthority("ADMIN", "USER")
+                                                .requestMatchers(HttpMethod.POST, "/api/**").hasAnyAuthority("ADMIN")
+                                                .requestMatchers(HttpMethod.PUT, "/api/**").hasAnyAuthority("ADMIN")
+                                                .requestMatchers(HttpMethod.DELETE, "/api/**").hasAnyAuthority("ADMIN")
+                                                // Phân quyền cho người dùng xem sách và giỏ hàng
+                                                .requestMatchers("/books", "/cart", "/cart/**")
+                                                .hasAnyAuthority("ADMIN", "USER")
+                                                .anyRequest().authenticated())
                                 .logout(logout -> logout
                                                 .logoutUrl("/logout")
                                                 .logoutSuccessUrl("/login")

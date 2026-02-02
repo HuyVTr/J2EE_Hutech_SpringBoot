@@ -20,7 +20,8 @@
                     <div class="container-fluid">
                         <h1>My Book List</h1>
                         <form class="d-flex" th:action="@{/books/search}" method="get">
-                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="keyword" required>
+                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+                                name="keyword" required>
                             <button class="btn btn-outline-success" type="submit">Search</button>
                         </form>
                     </div>
@@ -39,21 +40,8 @@
                     <th>Action</th>
                 </tr>
             </thead>
-            <tbody>
-                <tr th:each="book : ${books}">
-                    <td th:text="${book.id}"></td>
-                    <td th:text="${book.title}"></td>
-                    <td th:text="${book.author}"></td>
-                    <td th:text="${book.price}"></td>
-                    <td th:text="${book.category != null ? book.category.name : 'None'}"></td>
-                    <td>
-                        <a sec:authorize="hasAnyAuthority('ADMIN')" th:href="@{/books/edit/{id}(id=${book.id})}"
-                            class="btn btn-primary btn-sm">Edit</a>
-                        <a sec:authorize="hasAnyAuthority('ADMIN')" th:href="@{/books/delete/{id}(id=${book.id})}"
-                            class="btn btn-danger btn-sm" onclick="return confirm('Are you sure?')">Delete</a>
-                        <a th:href="@{/cart/add/{id}(id=${book.id})}" class="btn btn-success btn-sm">Add to Cart</a>
-                    </td>
-                </tr>
+            <tbody id="book-table-body">
+                <!-- Dữ liệu sẽ được load từ API thông qua list.js -->
             </tbody>
         </table>
     </div>
@@ -61,6 +49,10 @@
     <th:block th:replace="~{layout::footer}"></th:block>
 
     <script th:src="@{/js/jquery-3.7.0.min.js}"></script>
+    <script th:inline="javascript">
+        var isAdmin = /*[[${#authorization.expression("hasAuthority('ADMIN')")}]]*/ false;
+    </script>
+    <script th:src="@{/js/list.js}"></script>
 </body>
 
 </html>
