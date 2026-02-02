@@ -1,5 +1,7 @@
 package fit.hutech.spring.controllers;
 
+import fit.hutech.spring.daos.Item;
+import fit.hutech.spring.services.BookService;
 import fit.hutech.spring.services.CartService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.constraints.NotNull;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 public class CartController {
     private final CartService cartService;
+    private final BookService bookService;
 
     @GetMapping
     public String showCart(HttpSession session,
@@ -25,6 +28,18 @@ public class CartController {
         model.addAttribute("totalQuantity",
                 cartService.getSumQuantity(session));
         return "book/cart";
+    }
+
+    @GetMapping("/add/{id}")
+    public String addToCart(HttpSession session,
+                            @PathVariable Long id) {
+        var book = bookService.getBookById(id);
+        if (book.isPresent()) {
+            var cart = cartService.getCart(session);
+            cart.addItems(new Item(book.get().getId(), book.get().getTitle(), book.get().getPrice(), 1));
+            cartService.updateCart(session, cart);
+        }
+        return "redirect:/books";
     }
 
     @GetMapping("/removeFromCart/{id}")

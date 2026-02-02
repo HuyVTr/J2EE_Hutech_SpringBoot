@@ -7,9 +7,13 @@ import fit.hutech.spring.entities.ItemInvoice;
 import fit.hutech.spring.repositories.IBookRepository;
 import fit.hutech.spring.repositories.IInvoiceRepository;
 import fit.hutech.spring.repositories.IItemInvoiceRepository;
+import fit.hutech.spring.repositories.IUserRepository;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +32,7 @@ public class CartService {
     private final IInvoiceRepository invoiceRepository;
     private final IItemInvoiceRepository itemInvoiceRepository;
     private final IBookRepository bookRepository;
+    private final IUserRepository userRepository;
 
     public Cart getCart(@NotNull HttpSession session) {
         return Optional.ofNullable((Cart) session.getAttribute(CART_SESSION_KEY))
@@ -68,6 +73,21 @@ public class CartService {
         var invoice = new Invoice();
         invoice.setInvoiceDate(new Date(new Date().getTime()));
         invoice.setPrice(getSumPrice(session));
+
+        // --- FIX: Lấy User hiện tại và gán vào Invoice ---
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            if (authentication instanceof OAuth2AuthenticationToken oauthToken) {
+                // Nếu đăng nhập bằng Google (OAuth2), tìm theo Email
+                String email = oauthToken.getPrincipal().getAttribute("email");
+                userRepository.findByEmail(email).ifPresent(invoice::setUser);
+            } else {
+                // Nếu đăng nhập thường, tìm theo Username
+                userRepository.findByUsername(authentication.getName()).ifPresent(invoice::setUser);
+            }
+        }
+        // -------------------------------------------------
+        
         invoiceRepository.save(invoice);
 
         // 2. Duyệt qua từng item trong giỏ để lưu chi tiết hóa đơn (ItemInvoice)

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,9 +9,10 @@
     <th:block th:replace="~{layout::link-css}"></th:block>
     <th:block th:replace="~{layout::custom-css}"></th:block>
 </head>
+
 <body>
     <th:block th:replace="~{layout::header}"></th:block>
-    
+
     <div class="container" th:if="${not #lists.isEmpty(cart.cartItems)}">
         <table class="table">
             <thead>
@@ -29,24 +31,21 @@
                     <td th:text="${item.getBookName()}"></td>
                     <td>
                         <label>
-                            <input type="number" min="1" 
-                                   th:value="${item.getQuantity()}"
-                                   th:attr="data-id=${item.getBookId()}"
-                                   class="form-control quantity">
+                            <input type="number" min="1" th:value="${item.getQuantity()}"
+                                th:attr="data-id=${item.getBookId()}" class="form-control quantity">
                         </label>
                     </td>
                     <td th:text="${item.getPrice()}"></td>
                     <td th:text="${item.getPrice() * item.getQuantity()}"></td>
                     <td>
-                        <a class="btn btn-danger" 
-                           th:href="@{/cart/removeFromCart/{id}(id=${item.getBookId()})}">
-                           Remove
+                        <a class="btn btn-danger" th:href="@{/cart/removeFromCart/{id}(id=${item.getBookId()})}">
+                            Remove
                         </a>
                     </td>
                 </tr>
             </tbody>
         </table>
-        
+
         <div class="row">
             <div class="col-md-12">
                 <h3>Total: <span th:text="${totalPrice}"></span></h3>
@@ -73,4 +72,5 @@
     <th:block th:replace="~{layout::footer}"></th:block>
     <script th:src="@{/js/cart.js}"></script>
 </body>
+
 </html>

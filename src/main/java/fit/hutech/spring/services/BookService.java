@@ -54,7 +54,15 @@ public class BookService {
 
     // === BỔ SUNG: Phương thức tìm kiếm theo ảnh image_e6d09d.png ===
     public List<Book> searchBook(String keyword) {
-        return bookRepository.searchBook(keyword);
+        // Lọc lại kết quả bằng Java để phân biệt dấu tiếng Việt chính xác
+        // (Vì MySQL mặc định collation utf8_general_ci thường bỏ qua dấu: a == á)
+        String finalKeyword = keyword.toLowerCase();
+        return bookRepository.searchBook(keyword).stream()
+                .filter(book -> (book.getTitle() != null && book.getTitle().toLowerCase().contains(finalKeyword)) ||
+                        (book.getAuthor() != null && book.getAuthor().toLowerCase().contains(finalKeyword)) ||
+                        (book.getCategory() != null && book.getCategory().getName() != null
+                                && book.getCategory().getName().toLowerCase().contains(finalKeyword)))
+                .toList();
     }
     // ===============================================================
 }

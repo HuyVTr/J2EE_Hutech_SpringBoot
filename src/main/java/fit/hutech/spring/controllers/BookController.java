@@ -11,12 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import fit.hutech.spring.daos.Item;
 import fit.hutech.spring.entities.Book;
 import fit.hutech.spring.services.BookService;
-import fit.hutech.spring.services.CartService;
 import fit.hutech.spring.services.CategoryService;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +24,6 @@ import lombok.RequiredArgsConstructor;
 public class BookController {
     private final BookService bookService;
     private final CategoryService categoryService;
-    private final CartService cartService;
 
     @GetMapping
     public String showAllBooks(
@@ -40,7 +36,7 @@ public class BookController {
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("categories", categoryService.getAllCategories());
         long totalBooks = bookService.countAllBooks();
-        model.addAttribute("totalPages", (int) Math.ceil((double) totalBooks / pageSize) - 1);
+        model.addAttribute("totalPages", totalBooks > 0 ? (int) Math.ceil((double) totalBooks / pageSize) - 1 : 0);
 
         return "book/list";
     }
@@ -125,18 +121,6 @@ public class BookController {
                         () -> {
                             throw new IllegalArgumentException("Book not found");
                         });
-        return "redirect:/books";
-    }
-
-    @PostMapping("/add-to-cart")
-    public String addToCart(HttpSession session,
-            @RequestParam long id,
-            @RequestParam String name,
-            @RequestParam double price,
-            @RequestParam(defaultValue = "1") int quantity) {
-        var cart = cartService.getCart(session);
-        cart.addItems(new Item(id, name, price, quantity));
-        cartService.updateCart(session, cart);
         return "redirect:/books";
     }
 }
