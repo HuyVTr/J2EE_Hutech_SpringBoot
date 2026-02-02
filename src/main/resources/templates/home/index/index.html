@@ -1,39 +1,67 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ỨNG DỤNG QUẢN LÝ SÁCH</title>
+
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <th:block th:replace="~{layout::link-css}"></th:block>
-    <th:block th:replace="~{layout::custom-css}"></th:block>
+    <!-- Custom Home CSS -->
+    <link rel="stylesheet" th:href="@{/css/home.css}">
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
     <th:block th:replace="~{layout::header}"></th:block>
 
-    <div class="container">
-        <nav class="navbar navbar-light bg-light">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">
-                    TRANG CHỦ ỨNG DỤNG QUẢN LÝ SÁCH - KẾT NỐI CSDL MYSQL
-                </a>
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center mb-5">
+                <div class="text-uppercase fw-bold text-white-50 small">HUTECH Library System</div>
+                <div class="auth-buttons">
+                    <a href="/login" class="btn btn-light rounded-pill px-4 text-primary fw-bold"
+                        sec:authorize="!isAuthenticated()">
+                        <i class="fas fa-sign-in-alt me-2"></i> Đăng nhập
+                    </a>
+                    <form th:action="@{/logout}" method="post" class="d-inline" sec:authorize="isAuthenticated()">
+                        <button type="submit" class="btn btn-outline-light rounded-pill px-4">
+                            <i class="fas fa-sign-out-alt me-2"></i> Đăng xuất
+                        </button>
+                    </form>
+                </div>
             </div>
-        </nav>
+            <div class="text-center">
+                <h1 class="hero-title">Thư Viện Trực Tuyến HUTECH</h1>
+                <p class="hero-subtitle">Khám phá kho tàng tri thức vô tận với hàng ngàn đầu sách hấp dẫn</p>
+            </div>
+        </div>
+    </div>
 
+    <div class="container flex-grow-1 pb-5">
         <!-- Hiển thị danh sách sách -->
-        <div class="row" th:if="${books != null}">
-            <div class="col-md-3 mb-3" th:each="book : ${books}">
-                <div class="card h-100">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 book-grid" th:if="${books != null}">
+            <div class="col" th:each="book : ${books}">
+                <div class="card book-card h-100">
                     <div class="card-body">
-                        <h5 class="card-title" th:text="${book.title}">Tên sách</h5>
-                        <p class="card-text">Tác giả: <span th:text="${book.author}">Tác giả</span></p>
-                        <p class="card-text text-danger" th:text="${book.price} + ' VNĐ'">Giá</p>
+                        <h5 class="card-title" th:text="${book.title}" th:title="${book.title}">Tên sách</h5>
+                        <p class="card-author"><i class="fas fa-pen-nib me-2"></i><span th:text="${book.author}">Tác
+                                giả</span></p>
+                        <p class="card-price"
+                            th:text="${book.price != null ? #numbers.formatDecimal(book.price, 0, 'COMMA', 0, 'POINT') : 0} + ' đ'">
+                            Giá</p>
                     </div>
-                    <div class="card-footer bg-transparent border-top-0">
-                        <a href="#" class="btn btn-primary btn-sm">Chi tiết</a>
-                        <a th:href="@{/cart/add/{id}(id=${book.id})}" class="btn btn-success btn-sm">Thêm giỏ</a>
+                    <div class="card-footer">
+                        <a th:href="@{/cart/add/{id}(id=${book.id})}"
+                            class="btn btn-primary btn-icon text-white rounded-pill px-4 w-auto flex-grow-1"
+                            title="Thêm vào giỏ">
+                            <i class="fas fa-cart-plus me-2"></i> Thêm
+                        </a>
                     </div>
                 </div>
             </div>

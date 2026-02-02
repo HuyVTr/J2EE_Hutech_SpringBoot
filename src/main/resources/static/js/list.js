@@ -37,17 +37,17 @@ $(document).ready(function () {
                     let actionButtons = '';
                     // Chỉ hiển thị nút Edit/Delete nếu là ADMIN
                     if (typeof isAdmin !== 'undefined' && isAdmin) {
-                        actionButtons += '<a href="/books/edit/' + item.id + '" class="btn btn-primary btn-sm me-1">Edit</a>';
-                        actionButtons += '<button onclick="apiDeleteBook(' + item.id + ')" class="btn btn-danger btn-sm me-1">Delete</button>';
+                        actionButtons += '<a href="/books/edit/' + item.id + '" class="btn btn-outline-primary action-btn">Edit</a>';
+                        actionButtons += '<button onclick="apiDeleteBook(' + item.id + ')" class="btn btn-outline-danger action-btn">Delete</button>';
                     }
                     // Nút Add to Cart hiển thị cho tất cả
-                    actionButtons += '<a href="/cart/add/' + item.id + '" class="btn btn-success btn-sm">Add to Cart</a>';
+                    actionButtons += '<a href="/cart/add/' + item.id + '" class="btn btn-success action-btn text-white">Add to Cart</a>';
 
                     trHTML += '<tr id="book-' + item.id + '">' +
                         '<td>' + item.id + '</td>' +
                         '<td>' + item.title + '</td>' +
                         '<td>' + item.author + '</td>' +
-                        '<td>' + item.price + '</td>' +
+                        '<td>' + new Intl.NumberFormat('vi-VN').format(item.price) + ' VNĐ</td>' +
                         '<td>' + categoryName + '</td>' +
                         '<td>' + actionButtons + '</td>' +
                         '</tr>';
