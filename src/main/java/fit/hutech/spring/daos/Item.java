@@ -12,4 +12,5 @@ public class Item {
     private String bookName;
     private Double price;
     private int quantity;
+    private String imagePath;
 }

@@ -1,16 +1,7 @@
 package fit.hutech.spring.services;
 
-import fit.hutech.spring.daos.Cart;
-import fit.hutech.spring.daos.Item;
-import fit.hutech.spring.entities.Invoice;
-import fit.hutech.spring.entities.ItemInvoice;
-import fit.hutech.spring.repositories.IBookRepository;
-import fit.hutech.spring.repositories.IInvoiceRepository;
-import fit.hutech.spring.repositories.IItemInvoiceRepository;
-import fit.hutech.spring.repositories.IUserRepository;
-import jakarta.servlet.http.HttpSession;
-import jakarta.validation.constraints.NotNull;
-import lombok.RequiredArgsConstructor;
+import java.util.Optional;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
@@ -18,19 +9,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.Optional;
+import fit.hutech.spring.daos.Cart;
+import fit.hutech.spring.daos.Item;
+import fit.hutech.spring.repositories.IBookRepository;
+import fit.hutech.spring.repositories.IUserRepository;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.constraints.NotNull;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-@Transactional(isolation = Isolation.SERIALIZABLE, rollbackFor = {Exception.class, Throwable.class})
+@Transactional(isolation = Isolation.SERIALIZABLE, rollbackFor = { Exception.class, Throwable.class })
 public class CartService {
-    
+
     private static final String CART_SESSION_KEY = "cart";
 
     // Inject các Repository cần thiết để thao tác với DB
-    private final IInvoiceRepository invoiceRepository;
-    private final IItemInvoiceRepository itemInvoiceRepository;
     private final IBookRepository bookRepository;
     private final IUserRepository userRepository;
 
@@ -65,45 +59,60 @@ public class CartService {
 
     // === PHƯƠNG THỨC LƯU GIỎ HÀNG (SAVE CART) ===
     //
-    public void saveCart(@NotNull HttpSession session) {
+    // === PHƯƠNG THỨC LƯU GIỎ HÀNG (SAVE ORDER) ===
+    public void saveOrder(@NotNull HttpSession session, String receiverName, String phoneNumber, String address,
+            String note) {
         var cart = getCart(session);
-        if (cart.getCartItems().isEmpty()) return;
+        if (cart.getCartItems().isEmpty())
+            return;
 
-        // 1. Tạo và lưu hóa đơn (Invoice)
-        var invoice = new Invoice();
-        invoice.setInvoiceDate(new Date(new Date().getTime()));
-        invoice.setPrice(getSumPrice(session));
+        // 1. Tạo và lưu hóa đơn (Order)
+        var order = new fit.hutech.spring.entities.Order();
+        order.setOrderDate(java.time.LocalDateTime.now());
+        order.setTotalPrice(getSumPrice(session));
+        order.setShippingAddress(address);
+        order.setPhoneNumber(phoneNumber);
+        order.setNote(note);
+        order.setStatus("PENDING");
 
-        // --- FIX: Lấy User hiện tại và gán vào Invoice ---
+        // Gán User hiện tại cho Order
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {
             if (authentication instanceof OAuth2AuthenticationToken oauthToken) {
-                // Nếu đăng nhập bằng Google (OAuth2), tìm theo Email
                 String email = oauthToken.getPrincipal().getAttribute("email");
-                userRepository.findByEmail(email).ifPresent(invoice::setUser);
+                userRepository.findByEmail(email).ifPresent(order::setUser);
             } else {
-                // Nếu đăng nhập thường, tìm theo Username
-                userRepository.findByUsername(authentication.getName()).ifPresent(invoice::setUser);
+                userRepository.findByUsername(authentication.getName()).ifPresent(order::setUser);
             }
         }
-        // -------------------------------------------------
-        
-        invoiceRepository.save(invoice);
 
-        // 2. Duyệt qua từng item trong giỏ để lưu chi tiết hóa đơn (ItemInvoice)
+        // Lưu Order trước để có ID
+        fit.hutech.spring.repositories.IOrderRepository orderRepository = context
+                .getBean(fit.hutech.spring.repositories.IOrderRepository.class);
+        orderRepository.save(order);
+
+        // 2. Lưu chi tiết hóa đơn (OrderDetail)
+        fit.hutech.spring.repositories.IOrderDetailRepository orderDetailRepository = context
+                .getBean(fit.hutech.spring.repositories.IOrderDetailRepository.class);
+
         cart.getCartItems().forEach(item -> {
-            var items = new ItemInvoice();
-            items.setInvoice(invoice);
-            items.setQuantity(item.getQuantity());
-            
-            // Tìm sách theo ID, nếu không thấy thì báo lỗi
-            items.setBook(bookRepository.findById(item.getBookId())
-                    .orElseThrow());
-            
-            itemInvoiceRepository.save(items);
+            var orderDetail = new fit.hutech.spring.entities.OrderDetail();
+            orderDetail.setOrder(order);
+            orderDetail.setQuantity(item.getQuantity());
+            orderDetail.setPrice(item.getPrice());
+
+            // Tìm sách theo ID
+            orderDetail.setBook(bookRepository.findById(item.getBookId()).orElseThrow());
+
+            orderDetailRepository.save(orderDetail);
         });
 
         // 3. Xóa giỏ hàng sau khi đã thanh toán thành công
         removeCart(session);
     }
+
+    // Helper để lấy ApplicationContext (tạm thời, tốt nhất là inject Repository ở
+    // trên)
+    @org.springframework.beans.factory.annotation.Autowired
+    private org.springframework.context.ApplicationContext context;
 }

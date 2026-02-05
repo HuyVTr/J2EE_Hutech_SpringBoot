@@ -49,18 +49,29 @@
             <div class="col" th:each="book : ${books}">
                 <div class="card book-card h-100">
                     <div class="card-body">
-                        <h5 class="card-title" th:text="${book.title}" th:title="${book.title}">Tên sách</h5>
+                        <div class="text-center mb-3"
+                            style="height: 200px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                            <img th:if="${book.imagePath}" th:src="${book.imagePath}" class="img-fluid"
+                                style="max-height: 100%;" alt="Book Image">
+                            <span th:unless="${book.imagePath}" class="text-muted"><i
+                                    class="fas fa-image fa-3x"></i></span>
+                        </div>
+                        <h5 class="card-title text-truncate" th:text="${book.title}" th:title="${book.title}">Tên sách
+                        </h5>
                         <p class="card-author"><i class="fas fa-pen-nib me-2"></i><span th:text="${book.author}">Tác
                                 giả</span></p>
                         <p class="card-price"
                             th:text="${book.price != null ? #numbers.formatDecimal(book.price, 0, 'COMMA', 0, 'POINT') : 0} + ' đ'">
                             Giá</p>
                     </div>
-                    <div class="card-footer">
+                    <div class="card-footer d-flex gap-2">
+                        <a th:href="@{/books/detail/{id}(id=${book.id})}"
+                            class="btn btn-outline-primary btn-sm rounded-pill flex-grow-1">
+                            Detail
+                        </a>
                         <a th:href="@{/cart/add/{id}(id=${book.id})}"
-                            class="btn btn-primary btn-icon text-white rounded-pill px-4 w-auto flex-grow-1"
-                            title="Thêm vào giỏ">
-                            <i class="fas fa-cart-plus me-2"></i> Thêm
+                            class="btn btn-primary btn-sm text-white rounded-pill flex-grow-1" title="Thêm vào giỏ">
+                            <i class="fas fa-cart-plus"></i> Add
                         </a>
                     </div>
                 </div>

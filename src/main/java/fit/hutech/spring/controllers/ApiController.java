@@ -81,7 +81,7 @@ public class ApiController {
             HttpSession session) {
         var cart = cartService.getCart(session);
         var book = bookService.getBookById(bookId).orElseThrow(() -> new IllegalArgumentException("Book not found"));
-        cart.addItems(new Item(book.getId(), book.getTitle(), book.getPrice(), quantity));
+        cart.addItems(new Item(book.getId(), book.getTitle(), book.getPrice(), quantity, book.getImagePath()));
         cartService.updateCart(session, cart);
         return ResponseEntity.ok(cart);
     }

@@ -41,11 +41,13 @@ $(document).ready(function () {
                         actionButtons += '<button onclick="apiDeleteBook(' + item.id + ')" class="btn btn-outline-danger action-btn">Delete</button>';
                     }
                     // Nút Add to Cart hiển thị cho tất cả
+                    actionButtons += '<a href="/books/detail/' + item.id + '" class="btn btn-info action-btn text-white me-1">Detail</a>';
                     actionButtons += '<a href="/cart/add/' + item.id + '" class="btn btn-success action-btn text-white">Add to Cart</a>';
 
                     trHTML += '<tr id="book-' + item.id + '">' +
                         '<td>' + item.id + '</td>' +
                         '<td>' + item.title + '</td>' +
+                        '<td>' + (item.imagePath ? '<img src="' + item.imagePath + '" style="max-height: 50px;" />' : '') + '</td>' +
                         '<td>' + item.author + '</td>' +
                         '<td>' + new Intl.NumberFormat('vi-VN').format(item.price) + ' VNĐ</td>' +
                         '<td>' + categoryName + '</td>' +

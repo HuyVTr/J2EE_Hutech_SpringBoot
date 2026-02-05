@@ -26,6 +26,7 @@
                     <thead>
                         <tr>
                             <th>Book ID</th>
+                            <th>Image</th>
                             <th>Book Name</th>
                             <th>Quantity</th>
                             <th>Price</th>
@@ -36,6 +37,9 @@
                     <tbody>
                         <tr th:each="item : ${cart.cartItems}">
                             <td th:text="${item.getBookId()}"></td>
+                            <td>
+                                <img th:if="${item.imagePath}" th:src="${item.imagePath}" style="max-height: 50px;">
+                            </td>
                             <td class="fw-bold text-primary" th:text="${item.getBookName()}"></td>
                             <td>
                                 <input type="number" min="1" th:value="${item.getQuantity()}"

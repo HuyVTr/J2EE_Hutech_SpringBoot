@@ -57,6 +57,9 @@ public class Book {
     @Positive(message = "Price must be greater than 0")
     private Double price;
 
+    @Column(name = "image_path")
+    private String imagePath;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     @ValidCategoryId

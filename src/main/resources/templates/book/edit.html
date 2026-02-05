@@ -19,7 +19,7 @@
             <div class="col-md-8 col-lg-6">
                 <div class="card-custom p-4">
                     <h1 class="page-title mb-4 text-center">Edit Book</h1>
-                    <form th:action="@{/books/edit}" th:object="${book}" method="post">
+                    <form th:action="@{/books/edit}" th:object="${book}" method="post" enctype="multipart/form-data">
                         <input type="hidden" th:field="*{id}">
 
                         <div class="mb-3">
@@ -52,6 +52,13 @@
                             </select>
                             <span class="text-danger" th:if="${#fields.hasErrors('category')}"
                                 th:errors="*{category}"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="image">Image:</label>
+                            <input class="form-control" type="file" id="image" name="image" accept="image/*">
+                            <img th:if="${book.imagePath}" th:src="${book.imagePath}" class="mt-2"
+                                style="max-height: 100px;">
                         </div>
 
                         <div class="d-flex justify-content-end mt-4">

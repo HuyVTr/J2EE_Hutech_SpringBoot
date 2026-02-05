@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Order Management</title>
+    <th:block th:replace="~{layout::link-css}"></th:block>
+    <th:block th:replace="~{layout::custom-css}"></th:block>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+    <th:block th:replace="~{layout::header}"></th:block>
+
+    <div class="container-fluid flex-grow-1 pt-4">
+        <h2 class="page-title mb-4">Order Management</h2>
+
+        <div class="card-custom">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="bg-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Date</th>
+                            <th>Customer</th>
+                            <th>Address</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="order : ${orders}">
+                            <td th:text="'#' + ${order.id}">#1</td>
+                            <td th:text="${#temporals.format(order.orderDate, 'dd-MM-yyyy HH:mm')}">Date</td>
+                            <td>
+                                <div class="fw-bold" th:text="${order.user != null ? order.user.username : 'Guest'}">
+                                    User</div>
+                                <div class="small text-muted" th:text="${order.phoneNumber}">0909090909</div>
+                            </td>
+                            <td class="small" style="max-width: 200px;" th:text="${order.shippingAddress}">Address</td>
+                            <td class="text-danger fw-bold"
+                                th:text="${#numbers.formatDecimal(order.totalPrice, 0, 'POINT', 0, 'COMMA')} + ' VNĐ'">
+                                Price</td>
+                            <td>
+                                <span class="badge rounded-pill" th:classappend="${order.status == 'PENDING' ? 'bg-warning text-dark' : 
+                                                       (order.status == 'SHIPPING' ? 'bg-info text-white' : 
+                                                       (order.status == 'DELIVERED' ? 'bg-success' : 'bg-secondary'))}"
+                                    th:text="${order.status}">Status</span>
+                            </td>
+                            <td>
+                                <form th:action="@{/admin/orders/update-status/{id}(id=${order.id})}" method="post"
+                                    class="d-flex gap-2">
+                                    <select name="status" class="form-select form-select-sm" style="width: auto;">
+                                        <option value="PENDING" th:selected="${order.status == 'PENDING'}">Pending
+                                        </option>
+                                        <option value="SHIPPING" th:selected="${order.status == 'SHIPPING'}">Shipping
+                                        </option>
+                                        <option value="DELIVERED" th:selected="${order.status == 'DELIVERED'}">Delivered
+                                        </option>
+                                        <option value="CANCELLED" th:selected="${order.status == 'CANCELLED'}">Cancelled
+                                        </option>
+                                    </select>
+                                    <button type="submit" class="btn btn-primary btn-sm rounded-pill">Update</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <th:block th:replace="~{layout::footer}"></th:block>
+</body>
+
+</html>

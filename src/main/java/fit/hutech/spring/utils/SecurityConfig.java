@@ -54,8 +54,9 @@ public class SecurityConfig {
                                                 .requestMatchers(HttpMethod.PUT, "/api/**").hasAnyAuthority("ADMIN")
                                                 .requestMatchers(HttpMethod.DELETE, "/api/**").hasAnyAuthority("ADMIN")
                                                 // Phân quyền cho người dùng xem sách và giỏ hàng
-                                                .requestMatchers("/books", "/cart", "/cart/**")
+                                                .requestMatchers("/books", "/cart", "/cart/**", "/orders/**")
                                                 .hasAnyAuthority("ADMIN", "USER")
+                                                .requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
                                                 .anyRequest().authenticated())
                                 .logout(logout -> logout
                                                 .logoutUrl("/logout")

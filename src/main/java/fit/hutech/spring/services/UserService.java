@@ -62,4 +62,16 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
         setDefaultRole(username);
     }
+
+    public java.util.List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public void updateUserRole(Long userId, Long roleId) {
+        userRepository.findById(userId).ifPresent(user -> {
+            user.getRoles().clear();
+            roleRepository.findById(roleId).ifPresent(role -> user.getRoles().add(role));
+            userRepository.save(user);
+        });
+    }
 }

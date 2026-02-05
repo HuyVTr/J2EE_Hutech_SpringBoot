@@ -1,16 +1,17 @@
 package fit.hutech.spring.controllers;
 
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import fit.hutech.spring.daos.Item;
 import fit.hutech.spring.services.BookService;
 import fit.hutech.spring.services.CartService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/cart")
@@ -21,7 +22,7 @@ public class CartController {
 
     @GetMapping
     public String showCart(HttpSession session,
-                           @NotNull Model model) {
+            @NotNull Model model) {
         model.addAttribute("cart", cartService.getCart(session));
         model.addAttribute("totalPrice",
                 cartService.getSumPrice(session));
@@ -32,11 +33,12 @@ public class CartController {
 
     @GetMapping("/add/{id}")
     public String addToCart(HttpSession session,
-                            @PathVariable Long id) {
+            @PathVariable Long id) {
         var book = bookService.getBookById(id);
         if (book.isPresent()) {
             var cart = cartService.getCart(session);
-            cart.addItems(new Item(book.get().getId(), book.get().getTitle(), book.get().getPrice(), 1));
+            cart.addItems(new Item(book.get().getId(), book.get().getTitle(), book.get().getPrice(), 1,
+                    book.get().getImagePath()));
             cartService.updateCart(session, cart);
         }
         return "redirect:/books";
@@ -44,7 +46,7 @@ public class CartController {
 
     @GetMapping("/removeFromCart/{id}")
     public String removeFromCart(HttpSession session,
-                                 @PathVariable Long id) {
+            @PathVariable Long id) {
         var cart = cartService.getCart(session);
         cart.removeItems(id);
         return "redirect:/cart";
@@ -52,8 +54,8 @@ public class CartController {
 
     @GetMapping("/updateCart/{id}/{quantity}")
     public String updateCart(HttpSession session,
-                             @PathVariable Long id,
-                             @PathVariable int quantity) {
+            @PathVariable Long id,
+            @PathVariable int quantity) {
         var cart = cartService.getCart(session);
         cart.updateItems(id, quantity);
         return "book/cart";
@@ -66,10 +68,31 @@ public class CartController {
     }
 
     // === BỔ SUNG: Phương thức Checkout từ ảnh image_e6b97e.png ===
+    // === PHƯƠNG THỨC CHECKOUT & SUBMIT ORDER ===
     @GetMapping("/checkout")
-    public String checkout(HttpSession session) {
-        cartService.saveCart(session);
-        return "redirect:/cart";
+    public String checkout(HttpSession session, Model model) {
+        var cart = cartService.getCart(session);
+        if (cart.getCartItems().isEmpty()) {
+            return "redirect:/cart";
+        }
+        model.addAttribute("cart", cart);
+        model.addAttribute("totalPrice", cartService.getSumPrice(session));
+
+        // Lấy thông tin user hiện tại để điền sẵn form
+        // (Logic lấy user có thể inject UserService, tạm thời để trống hoặc lấy từ
+        // Authentication nếu cần)
+        return "book/checkout";
     }
+
+    @org.springframework.web.bind.annotation.PostMapping("/submit")
+    public String submitOrder(HttpSession session,
+            @org.springframework.web.bind.annotation.RequestParam String receiverName,
+            @org.springframework.web.bind.annotation.RequestParam String phoneNumber,
+            @org.springframework.web.bind.annotation.RequestParam String address,
+            @org.springframework.web.bind.annotation.RequestParam(required = false) String note) {
+        cartService.saveOrder(session, receiverName, phoneNumber, address, note);
+        return "redirect:/books"; // Hoặc redirect sang trang "Cảm ơn/Thông báo thành công"
+    }
+    // ===========================================
     // =============================================================
 }

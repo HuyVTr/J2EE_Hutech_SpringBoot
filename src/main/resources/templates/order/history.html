@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order History</title>
+    <th:block th:replace="~{layout::link-css}"></th:block>
+    <th:block th:replace="~{layout::custom-css}"></th:block>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+    <th:block th:replace="~{layout::header}"></th:block>
+
+    <div class="container flex-grow-1 pt-4">
+        <h2 class="page-title mb-4">My Order History</h2>
+
+        <div class="alert alert-info" th:if="${orders.isEmpty()}">
+            You have placed no orders yet. <a href="/books" class="alert-link">Start shopping now!</a>
+        </div>
+
+        <div class="card-custom mb-4" th:each="order : ${orders}">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="fw-bold">Order ID: #<span th:text="${order.id}"></span></span>
+                    <span class="text-muted mx-2">|</span>
+                    <span class="text-muted"
+                        th:text="${#temporals.format(order.orderDate, 'dd-MM-yyyy HH:mm')}">Date</span>
+                </div>
+                <div>
+                    <!-- Badge trạng thái -->
+                    <span class="badge rounded-pill" th:classappend="${order.status == 'PENDING' ? 'bg-warning text-dark' : 
+                                           (order.status == 'SHIPPING' ? 'bg-info text-white' : 
+                                           (order.status == 'DELIVERED' ? 'bg-success' : 'bg-secondary'))}"
+                        th:text="${order.status}">Status</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-borderless">
+                        <thead>
+                            <tr class="text-muted small">
+                                <th>Product</th>
+                                <th>Quantity</th>
+                                <th class="text-end">Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="detail : ${order.orderDetails}">
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <img th:if="${detail.book.imagePath}" th:src="${detail.book.imagePath}"
+                                            style="width: 40px; height: 50px; object-fit: cover; margin-right: 10px;"
+                                            class="rounded">
+                                        <span th:text="${detail.book.title}">Book Title</span>
+                                    </div>
+                                </td>
+                                <td th:text="${detail.quantity}">1</td>
+                                <td class="text-end"
+                                    th:text="${#numbers.formatDecimal(detail.price, 0, 'POINT', 0, 'COMMA')} + ' VNĐ'">
+                                    Price</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card-footer bg-white text-end">
+                <span class="text-muted me-2">Total:</span>
+                <span class="fs-5 text-danger fw-bold"
+                    th:text="${#numbers.formatDecimal(order.totalPrice, 0, 'POINT', 0, 'COMMA')} + ' VNĐ'">Total</span>
+            </div>
+        </div>
+    </div>
+
+    <th:block th:replace="~{layout::footer}"></th:block>
+</body>
+
+</html>

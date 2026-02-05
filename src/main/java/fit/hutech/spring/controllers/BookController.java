@@ -1,5 +1,12 @@
 package fit.hutech.spring.controllers;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.UUID;
+
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import fit.hutech.spring.entities.Book;
 import fit.hutech.spring.services.BookService;
@@ -74,6 +82,7 @@ public class BookController {
     @PostMapping("/add")
     public String addBook(@Valid @ModelAttribute("book") Book book,
             BindingResult bindingResult,
+            @RequestParam("image") MultipartFile imageFile,
             Model model) {
         if (bindingResult.hasErrors()) {
             var errors = bindingResult.getAllErrors()
@@ -83,6 +92,14 @@ public class BookController {
             model.addAttribute("errors", errors);
             model.addAttribute("categories", categoryService.getAllCategories());
             return "book/add";
+        }
+        if (!imageFile.isEmpty()) {
+            try {
+                String imageName = saveImageStatic(imageFile);
+                book.setImagePath("/images/books/" + imageName);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         bookService.addBook(book);
         return "redirect:/books";
@@ -98,7 +115,8 @@ public class BookController {
 
     @PostMapping("/edit")
     public String editBook(@Valid @ModelAttribute("book") Book book,
-            @NotNull BindingResult bindingResult,
+            BindingResult bindingResult,
+            @RequestParam("image") MultipartFile imageFile,
             Model model) {
         if (bindingResult.hasErrors()) {
             var errors = bindingResult.getAllErrors()
@@ -108,6 +126,14 @@ public class BookController {
             model.addAttribute("errors", errors);
             model.addAttribute("categories", categoryService.getAllCategories());
             return "book/edit";
+        }
+        if (!imageFile.isEmpty()) {
+            try {
+                String imageName = saveImageStatic(imageFile);
+                book.setImagePath("/images/books/" + imageName);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         bookService.updateBook(book);
         return "redirect:/books";
@@ -122,5 +148,24 @@ public class BookController {
                             throw new IllegalArgumentException("Book not found");
                         });
         return "redirect:/books";
+    }
+
+    @GetMapping("/detail/{id}")
+    public String getBookDetail(@PathVariable long id, Model model) {
+        var book = bookService.getBookById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Book not found"));
+        model.addAttribute("book", book);
+        return "book/detail";
+    }
+
+    private String saveImageStatic(MultipartFile image) throws IOException {
+        Path uploadPath = Paths.get("uploads");
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
+        }
+        String filename = UUID.randomUUID().toString() + "_" + image.getOriginalFilename();
+        Path filePath = uploadPath.resolve(filename);
+        Files.copy(image.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+        return filename;
     }
 }
