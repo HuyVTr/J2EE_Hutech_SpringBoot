@@ -44,19 +44,32 @@ public class SecurityConfig {
                                                 .requestMatchers("/css/**", "/js/**", "/", "/oauth/**", "/register",
                                                                 "/error")
                                                 .permitAll()
-                                                // Phân quyền ADMIN cho các thao tác quản trị
+                                                // Phân quyền ADMIN và STAFF cho các thao tác quản lý Sách
                                                 .requestMatchers("/books/edit/**", "/books/add", "/books/delete/**")
-                                                .hasAnyAuthority("ADMIN")
-                                                // Cấu hình phân quyền cho API: GET cho tất cả, còn lại chỉ ADMIN
+                                                .hasAnyAuthority("ADMIN", "STAFF")
+
+                                                // Phân quyền ADMIN và STAFF cho các thao tác quản lý Đơn hàng
+                                                .requestMatchers("/admin/orders/**")
+                                                .hasAnyAuthority("ADMIN", "STAFF")
+
+                                                // CHỈ ADMIN mới được quản lý User
+                                                .requestMatchers("/admin/users/**").hasAnyAuthority("ADMIN")
+
+                                                // Cấu hình phân quyền cho API
                                                 .requestMatchers(HttpMethod.GET, "/api/**")
-                                                .hasAnyAuthority("ADMIN", "USER")
-                                                .requestMatchers(HttpMethod.POST, "/api/**").hasAnyAuthority("ADMIN")
-                                                .requestMatchers(HttpMethod.PUT, "/api/**").hasAnyAuthority("ADMIN")
-                                                .requestMatchers(HttpMethod.DELETE, "/api/**").hasAnyAuthority("ADMIN")
-                                                // Phân quyền cho người dùng xem sách và giỏ hàng
+                                                .hasAnyAuthority("ADMIN", "USER", "STAFF")
+                                                .requestMatchers(HttpMethod.POST, "/api/**")
+                                                .hasAnyAuthority("ADMIN", "STAFF")
+                                                .requestMatchers(HttpMethod.PUT, "/api/**")
+                                                .hasAnyAuthority("ADMIN", "STAFF")
+                                                .requestMatchers(HttpMethod.DELETE, "/api/**")
+                                                .hasAnyAuthority("ADMIN", "STAFF")
+
+                                                // Phân quyền xem danh sách sách (Ai cũng xem được trừ guest nếu muốn, ở
+                                                // đây set authenticated)
                                                 .requestMatchers("/books", "/cart", "/cart/**", "/orders/**")
-                                                .hasAnyAuthority("ADMIN", "USER")
-                                                .requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
+                                                .hasAnyAuthority("ADMIN", "USER", "STAFF")
+
                                                 .anyRequest().authenticated())
                                 .logout(logout -> logout
                                                 .logoutUrl("/logout")

@@ -26,15 +26,15 @@
                             <a class="nav-link active" aria-current="page" href="/">Home</a>
                         </li>
 
-                        <li class="nav-item" sec:authorize="hasAnyAuthority('ADMIN', 'USER')">
+                        <li class="nav-item" sec:authorize="hasAnyAuthority('ADMIN', 'USER', 'STAFF')">
                             <a class="nav-link" href="/books">List Book</a>
                         </li>
 
-                        <li class="nav-item" sec:authorize="hasAnyAuthority('ADMIN')">
+                        <li class="nav-item" sec:authorize="hasAnyAuthority('ADMIN', 'STAFF')">
                             <a class="nav-link" href="/books/add">Add Book</a>
                         </li>
 
-                        <li class="nav-item" sec:authorize="hasAnyAuthority('ADMIN', 'USER')">
+                        <li class="nav-item" sec:authorize="hasAnyAuthority('ADMIN', 'USER', 'STAFF')">
                             <a class="nav-link" href="/cart">Cart</a>
                         </li>
 
@@ -42,7 +42,7 @@
                             <a class="nav-link" href="/orders/history">My Orders</a>
                         </li>
 
-                        <li class="nav-item" sec:authorize="hasAnyAuthority('ADMIN')">
+                        <li class="nav-item" sec:authorize="hasAnyAuthority('ADMIN', 'STAFF')">
                             <a class="nav-link" href="/admin/orders">Manage Orders</a>
                         </li>
 
