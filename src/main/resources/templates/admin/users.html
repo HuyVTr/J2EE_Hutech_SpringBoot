@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -40,12 +40,16 @@
                             </td>
                             <td>
                                 <form th:action="@{/admin/users/update-role/{id}(id=${user.id})}" method="post"
-                                    class="d-flex gap-2">
-                                    <select name="roleId" class="form-select form-select-sm" style="width: auto;">
+                                    class="d-flex align-items-center gap-2">
+                                    <select name="roleId" class="form-select rounded-pill border-secondary shadow-sm"
+                                        style="min-width: 150px; cursor: pointer;">
                                         <option th:each="role : ${allRoles}" th:value="${role.id}"
-                                            th:text="${role.name}" th:selected="${user.roles.contains(role)}"></option>
+                                            th:text="${role.name}" th:selected="${user.roles.contains(role)}">
+                                        </option>
                                     </select>
-                                    <button type="submit" class="btn btn-primary btn-sm rounded-pill">Cập nhật</button>
+                                    <button type="submit" class="btn btn-primary rounded-pill px-3 shadow-sm">
+                                        <i class="fas fa-save me-1"></i> Lưu
+                                    </button>
                                 </form>
                             </td>
                         </tr>
