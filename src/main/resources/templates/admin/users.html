@@ -14,7 +14,7 @@
     <th:block th:replace="~{layout::header}"></th:block>
 
     <div class="container-fluid flex-grow-1 pt-4">
-        <h2 class="page-title mb-4">User Management (RBAC)</h2>
+        <h2 class="page-title mb-4">Quản lý người dùng (Phân quyền)</h2>
 
         <div class="card-custom">
             <div class="table-responsive">
@@ -22,10 +22,10 @@
                     <thead class="bg-light">
                         <tr>
                             <th>ID</th>
-                            <th>Username</th>
+                            <th>Tên người dùng</th>
                             <th>Email</th>
-                            <th>Current Role</th>
-                            <th>Change Role</th>
+                            <th>Vai trò hiện tại</th>
+                            <th>Đổi vai trò</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -45,7 +45,7 @@
                                         <option th:each="role : ${allRoles}" th:value="${role.id}"
                                             th:text="${role.name}" th:selected="${user.roles.contains(role)}"></option>
                                     </select>
-                                    <button type="submit" class="btn btn-primary btn-sm rounded-pill">Update</button>
+                                    <button type="submit" class="btn btn-primary btn-sm rounded-pill">Cập nhật</button>
                                 </form>
                             </td>
                         </tr>

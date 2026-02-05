@@ -37,12 +37,12 @@ $(document).ready(function () {
                     let actionButtons = '';
                     // Chỉ hiển thị nút Edit/Delete nếu là ADMIN
                     if (typeof isAdmin !== 'undefined' && isAdmin) {
-                        actionButtons += '<a href="/books/edit/' + item.id + '" class="btn btn-outline-primary action-btn">Edit</a>';
-                        actionButtons += '<button onclick="apiDeleteBook(' + item.id + ')" class="btn btn-outline-danger action-btn">Delete</button>';
+                        actionButtons += '<a href="/books/edit/' + item.id + '" class="btn btn-outline-primary action-btn">Sửa</a>';
+                        actionButtons += '<button onclick="apiDeleteBook(' + item.id + ')" class="btn btn-outline-danger action-btn">Xóa</button>';
                     }
                     // Nút Add to Cart hiển thị cho tất cả
-                    actionButtons += '<a href="/books/detail/' + item.id + '" class="btn btn-info action-btn text-white me-1">Detail</a>';
-                    actionButtons += '<a href="/cart/add/' + item.id + '" class="btn btn-success action-btn text-white">Add to Cart</a>';
+                    actionButtons += '<a href="/books/detail/' + item.id + '" class="btn btn-info action-btn text-white me-1">Chi tiết</a>';
+                    actionButtons += '<a href="/cart/add/' + item.id + '" class="btn btn-success action-btn text-white">Thêm vào giỏ</a>';
 
                     trHTML += '<tr id="book-' + item.id + '">' +
                         '<td>' + item.id + '</td>' +

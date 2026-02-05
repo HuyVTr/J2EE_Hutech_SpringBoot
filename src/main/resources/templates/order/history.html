@@ -14,26 +14,29 @@
     <th:block th:replace="~{layout::header}"></th:block>
 
     <div class="container flex-grow-1 pt-4">
-        <h2 class="page-title mb-4">My Order History</h2>
+        <h2 class="page-title mb-4">Lịch sử đơn hàng</h2>
 
         <div class="alert alert-info" th:if="${orders.isEmpty()}">
-            You have placed no orders yet. <a href="/books" class="alert-link">Start shopping now!</a>
+            Bạn chưa có đơn hàng nào. <a href="/books" class="alert-link">Mua sắm ngay!</a>
         </div>
 
         <div class="card-custom mb-4" th:each="order : ${orders}">
             <div class="card-header bg-white d-flex justify-content-between align-items-center">
                 <div>
-                    <span class="fw-bold">Order ID: #<span th:text="${order.id}"></span></span>
+                    <span class="fw-bold">Mã đơn hàng: #<span th:text="${order.id}"></span></span>
                     <span class="text-muted mx-2">|</span>
                     <span class="text-muted"
                         th:text="${#temporals.format(order.orderDate, 'dd-MM-yyyy HH:mm')}">Date</span>
                 </div>
                 <div>
                     <!-- Badge trạng thái -->
+                    <!-- Tạm thời để nguyên status tiếng Anh hoặc map sang tiếng Việt nếu muốn, nhưng status lưu DB là EN -->
+                    <!-- Ta có thể dùng th:switch hoặc logic để hiển thị tiếng Việt -->
                     <span class="badge rounded-pill" th:classappend="${order.status == 'PENDING' ? 'bg-warning text-dark' : 
                                            (order.status == 'SHIPPING' ? 'bg-info text-white' : 
-                                           (order.status == 'DELIVERED' ? 'bg-success' : 'bg-secondary'))}"
-                        th:text="${order.status}">Status</span>
+                                           (order.status == 'DELIVERED' ? 'bg-success' : 'bg-secondary'))}" th:text="${order.status == 'PENDING' ? 'Đang xử lý' : 
+                                  (order.status == 'SHIPPING' ? 'Đang giao' : 
+                                  (order.status == 'DELIVERED' ? 'Đã giao' : 'Đã hủy'))}">Status</span>
                 </div>
             </div>
             <div class="card-body">
@@ -41,9 +44,9 @@
                     <table class="table table-borderless">
                         <thead>
                             <tr class="text-muted small">
-                                <th>Product</th>
-                                <th>Quantity</th>
-                                <th class="text-end">Price</th>
+                                <th>Sản phẩm</th>
+                                <th>Số lượng</th>
+                                <th class="text-end">Giá</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -54,7 +57,7 @@
                                             th:src="${detail.book.imagePath.startsWith('/') ? detail.book.imagePath : '/' + detail.book.imagePath}"
                                             style="width: 40px; height: 50px; object-fit: cover; margin-right: 10px;"
                                             class="rounded">
-                                        <span th:text="${detail.book.title}">Book Title</span>
+                                        <span th:text="${detail.book.title}">Tên sách</span>
                                     </div>
                                 </td>
                                 <td th:text="${detail.quantity}">1</td>
@@ -67,7 +70,7 @@
                 </div>
             </div>
             <div class="card-footer bg-white text-end">
-                <span class="text-muted me-2">Total:</span>
+                <span class="text-muted me-2">Tổng tiền:</span>
                 <span class="fs-5 text-danger fw-bold"
                     th:text="${#numbers.formatDecimal(order.totalPrice, 0, 'POINT', 0, 'COMMA')} + ' VNĐ'">Total</span>
             </div>

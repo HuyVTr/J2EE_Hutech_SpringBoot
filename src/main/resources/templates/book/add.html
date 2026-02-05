@@ -17,34 +17,34 @@
         <div class="row justify-content-center">
             <div class="col-md-8 col-lg-6">
                 <div class="card-custom p-4">
-                    <h1 class="page-title mb-4 text-center">Add New Book</h1>
+                    <h1 class="page-title mb-4 text-center">Thêm sách mới</h1>
                     <form th:action="@{/books/add}" th:object="${book}" method="post" enctype="multipart/form-data">
                         <div class="mb-3">
-                            <label class="form-label" for="title">Title:</label><span class="text-danger">*</span>
-                            <input class="form-control" type="text" placeholder="Enter title" th:field="*{title}"
+                            <label class="form-label" for="title">Tên sách:</label><span class="text-danger">*</span>
+                            <input class="form-control" type="text" placeholder="Nhập tên sách" th:field="*{title}"
                                 id="title" required autofocus>
                             <span class="text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label" for="author">Author:</label><span class="text-danger">*</span>
+                            <label class="form-label" for="author">Tác giả:</label><span class="text-danger">*</span>
                             <input class="form-control" type="text" th:field="*{author}" id="author"
-                                placeholder="Enter author" required>
+                                placeholder="Nhập tên tác giả" required>
                             <span class="text-danger" th:if="${#fields.hasErrors('author')}"
                                 th:errors="*{author}"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label" for="price">Price:</label><span class="text-danger">*</span>
+                            <label class="form-label" for="price">Giá:</label><span class="text-danger">*</span>
                             <input class="form-control" required type="text" th:field="*{price}" id="price"
-                                placeholder="Enter price">
+                                placeholder="Nhập giá sách">
                             <span class="text-danger" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label" for="category">Category:</label><span class="text-danger">*</span>
+                            <label class="form-label" for="category">Danh mục:</label><span class="text-danger">*</span>
                             <select class="form-control" id="category" name="category.id">
-                                <option value="">-- Select Category --</option>
+                                <option value="">-- Chọn danh mục --</option>
                                 <option th:each="category : ${categories}" th:value="${category.getId()}"
                                     th:text="${category.getName()}"></option>
                             </select>
@@ -53,13 +53,13 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label" for="image">Image:</label>
+                            <label class="form-label" for="image">Ảnh bìa:</label>
                             <input class="form-control" type="file" id="image" name="image" accept="image/*">
                         </div>
 
                         <div class="d-flex justify-content-end mt-4">
-                            <a th:href="@{/books}" class="btn btn-secondary rounded-pill px-4 me-2">Cancel</a>
-                            <button type="submit" class="btn btn-primary rounded-pill px-4">Save Book</button>
+                            <a th:href="@{/books}" class="btn btn-secondary rounded-pill px-4 me-2">Hủy</a>
+                            <button type="submit" class="btn btn-primary rounded-pill px-4">Lưu sách</button>
                         </div>
                     </form>
                 </div>

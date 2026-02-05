@@ -42,7 +42,7 @@ public class SecurityConfig {
                                 .authorizeHttpRequests(auth -> auth
                                                 // Cho phép truy cập công khai
                                                 .requestMatchers("/css/**", "/js/**", "/", "/oauth/**", "/register",
-                                                                "/error")
+                                                                "/error", "/images/**")
                                                 .permitAll()
                                                 // Phân quyền ADMIN và STAFF cho các thao tác quản lý Sách
                                                 .requestMatchers("/books/edit/**", "/books/add", "/books/delete/**")
@@ -81,7 +81,7 @@ public class SecurityConfig {
                                 .formLogin(formLogin -> formLogin
                                                 .loginPage("/login")
                                                 .loginProcessingUrl("/login")
-                                                .defaultSuccessUrl("/")
+                                                .defaultSuccessUrl("/", true)
                                                 .failureUrl("/login?error")
                                                 .permitAll())
                                 .oauth2Login(oauth2Login -> oauth2Login

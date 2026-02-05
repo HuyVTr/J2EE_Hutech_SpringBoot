@@ -18,14 +18,14 @@
     <div class="container flex-grow-1">
         <div class="row">
             <div class="col-md-12 page-header d-flex justify-content-between align-items-center">
-                <h1 class="page-title">Book Management</h1>
+                <h1 class="page-title">Quản lý sách</h1>
                 <form id="search-form" class="d-flex">
-                    <input class="form-control search-input" type="search" placeholder="Search books..."
+                    <input class="form-control search-input" type="search" placeholder="Tìm kiếm sách..."
                         aria-label="Search" name="keyword" required>
-                    <button class="btn btn-search" type="submit">Search</button>
+                    <button class="btn btn-search" type="submit">Tìm kiếm</button>
                     <button class="btn btn-outline-secondary ms-2 rounded-pill" type="button" id="refresh-btn"
-                        title="Reset Search">
-                        <i class="bi bi-arrow-clockwise"></i> Refresh
+                        title="Làm mới">
+                        <i class="bi bi-arrow-clockwise"></i> Làm mới
                     </button>
                 </form>
             </div>
@@ -37,13 +37,13 @@
                 <table class="table table-custom">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Title</th>
-                            <th>Image</th>
-                            <th>Author</th>
-                            <th>Price</th>
-                            <th>Category</th>
-                            <th>Action</th>
+                            <th>Mã sách</th>
+                            <th>Tên sách</th>
+                            <th>Ảnh</th>
+                            <th>Tác giả</th>
+                            <th>Giá</th>
+                            <th>Danh mục</th>
+                            <th>Hành động</th>
                         </tr>
                     </thead>
                     <tbody id="book-table-body">
