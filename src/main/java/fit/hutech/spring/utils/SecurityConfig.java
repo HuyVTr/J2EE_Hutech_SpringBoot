@@ -14,7 +14,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.web.SecurityFilterChain;
 
 import fit.hutech.spring.services.OAuthService;
@@ -90,22 +89,52 @@ public class SecurityConfig {
                                                 .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint
                                                                 .userService(oAuthService))
                                                 // Tích hợp Success Handler lưu người dùng OAuth vào DB
+                                                // Tích hợp Success Handler lưu người dùng OAuth vào DB
                                                 .successHandler((request, response, authentication) -> {
-                                                        var oidcUser = (DefaultOidcUser) authentication.getPrincipal();
-                                                        userService.saveOauthUser(oidcUser.getEmail(),
-                                                                        oidcUser.getName());
+                                                        var oauthUser = (org.springframework.security.oauth2.core.user.OAuth2User) authentication
+                                                                        .getPrincipal();
+
+                                                        // Fallback logic for email (GitHub might not provide email, or
+                                                        // Google/Facebook differs)
+                                                        String email = oauthUser.getAttribute("email");
+                                                        String name = oauthUser.getAttribute("name");
+
+                                                        // GitHub fallback: if email is null, use login + @github.com
+                                                        // placeholder
+                                                        if (email == null && oauthUser.getAttribute("login") != null) {
+                                                                email = oauthUser.getAttribute("login").toString()
+                                                                                + "@github.com";
+                                                        }
+                                                        // General fallback
+                                                        if (email == null) {
+                                                                email = oauthUser.getName() + "@oauth.com";
+                                                        }
+
+                                                        // Ensure name is not null
+                                                        if (name == null) {
+                                                                name = oauthUser.getAttribute("login") != null
+                                                                                ? oauthUser.getAttribute("login")
+                                                                                                .toString()
+                                                                                : email;
+                                                        }
+
+                                                        // Get Provider (google, facebook, github)
+                                                        String provider = ((OAuth2AuthenticationToken) authentication)
+                                                                        .getAuthorizedClientRegistrationId();
+
+                                                        userService.saveOauthUser(email, name, provider);
 
                                                         // --- FIX: Lấy user từ DB và cập nhật SecurityContext để có
                                                         // quyền (Role) ---
-                                                        var dbUser = userService.findByEmail(oidcUser.getEmail())
-                                                                        .orElse(null);
+                                                        var dbUser = userService.findByEmail(email).orElse(null);
                                                         if (dbUser != null) {
                                                                 var authorities = new ArrayList<GrantedAuthority>(
-                                                                                oidcUser.getAuthorities());
+                                                                                oauthUser.getAuthorities());
                                                                 dbUser.getRoles().forEach(role -> authorities
                                                                                 .add(new SimpleGrantedAuthority(
                                                                                                 role.getName())));
-                                                                var newToken = new OAuth2AuthenticationToken(oidcUser,
+
+                                                                var newToken = new OAuth2AuthenticationToken(oauthUser,
                                                                                 authorities,
                                                                                 ((OAuth2AuthenticationToken) authentication)
                                                                                                 .getAuthorizedClientRegistrationId());

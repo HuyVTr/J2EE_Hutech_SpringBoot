@@ -50,7 +50,7 @@ public class UserService implements UserDetailsService {
         });
     }
 
-    public void saveOauthUser(String email, String username) {
+    public void saveOauthUser(String email, String username, String provider) {
         if (userRepository.findByUsername(username).isPresent() ||
                 userRepository.findByEmail(email).isPresent())
             return;
@@ -58,7 +58,7 @@ public class UserService implements UserDetailsService {
         user.setUsername(username);
         user.setEmail(email);
         user.setPassword("OAUTH2_PROVIDER"); // Mật khẩu giả cho OAuth
-        user.setProvider("GOOGLE");
+        user.setProvider(provider.toUpperCase());
         userRepository.save(user);
         setDefaultRole(username);
     }

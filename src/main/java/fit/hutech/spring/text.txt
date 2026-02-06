@@ -9,25 +9,23 @@ PS D:\DoAn\J2EE\VoTruongHuy_220801278>  & 'C:\Program Files\Eclipse Adoptium\jdk
 
  :: Spring Boot ::                (v4.0.2)
 
-2026-02-05T22:46:33.057+07:00  INFO 6032 --- [  restartedMain] f.h.s.VoTruongHuy_2280601278Application  : Starting VoTruongHuy_2280601278Application using Java 21.0.7 with PID 6032 (D:\DoAn\J2EE\VoTruongHuy_220801278\spring\target\classes started by PC in D:\DoAn\J2EE\VoTruongHuy_220801278)
-2026-02-05T22:46:33.062+07:00  INFO 6032 --- [  restartedMain] f.h.s.VoTruongHuy_2280601278Application  : No active profile set, falling back to 1 default profile: "default"
-2026-02-05T22:46:33.113+07:00  INFO 6032 --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
-2026-02-05T22:46:33.113+07:00  INFO 6032 --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
-2026-02-05T22:46:34.301+07:00  INFO 6032 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2026-02-05T22:46:34.380+07:00  INFO 6032 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 69 ms. Found 8 JPA repository interfaces.   
-2026-02-05T22:46:35.231+07:00  INFO 6032 --- [  restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
-2026-02-05T22:46:35.247+07:00  INFO 6032 --- [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2026-02-05T22:46:35.248+07:00  INFO 6032 --- [  restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.15]
-2026-02-05T22:46:35.296+07:00  INFO 6032 --- [  restartedMain] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 2182 ms
-2026-02-05T22:46:35.634+07:00  INFO 6032 --- [  restartedMain] org.hibernate.orm.jpa             
-       : HHH008540: Processing PersistenceUnitInfo [name: default]
-2026-02-05T22:46:35.710+07:00  INFO 6032 --- [  restartedMain] org.hibernate.orm.core            
-       : HHH000001: Hibernate ORM core version 7.2.1.Final
-2026-02-05T22:46:36.212+07:00  INFO 6032 --- [  restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2026-02-05T22:46:36.242+07:00  INFO 6032 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2026-02-05T22:46:36.551+07:00  INFO 6032 --- [  restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@37b8e00d
-2026-02-05T22:46:36.554+07:00  INFO 6032 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2026-02-05T22:46:36.635+07:00  INFO 6032 --- [  restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+2026-02-06T21:43:30.878+07:00  INFO 10196 --- [  restartedMain] f.h.s.VoTruongHuy_2280601278Application  : Starting VoTruongHuy_2280601278Application using Java 21.0.7 with PID 10196 (D:\DoAn\J2EE\VoTruongHuy_220801278\spring\target\classes started by PC in D:\DoAn\J2EE\VoTruongHuy_220801278)
+2026-02-06T21:43:30.884+07:00  INFO 10196 --- [  restartedMain] f.h.s.VoTruongHuy_2280601278Application  : No active profile set, falling back to 1 default profile: "default"
+2026-02-06T21:43:30.950+07:00  INFO 10196 --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-02-06T21:43:30.951+07:00  INFO 10196 --- [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-02-06T21:43:32.352+07:00  INFO 10196 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-02-06T21:43:32.476+07:00  INFO 10196 --- [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 108 ms. Found 8 JPA repository interfaces.
+2026-02-06T21:43:33.769+07:00  INFO 10196 --- [  restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-02-06T21:43:33.788+07:00  INFO 10196 --- [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-02-06T21:43:33.788+07:00  INFO 10196 --- [  restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.15]
+2026-02-06T21:43:33.851+07:00  INFO 10196 --- [  restartedMain] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 2900 ms
+2026-02-06T21:43:34.214+07:00  INFO 10196 --- [  restartedMain] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-02-06T21:43:34.301+07:00  INFO 10196 --- [  restartedMain] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.2.1.Final
+2026-02-06T21:43:34.828+07:00  INFO 10196 --- [  restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-02-06T21:43:34.869+07:00  INFO 10196 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-02-06T21:43:35.216+07:00  INFO 10196 --- [  restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3579648d
+2026-02-06T21:43:35.219+07:00  INFO 10196 --- [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-02-06T21:43:35.305+07:00  INFO 10196 --- [  restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
         Database JDBC URL [jdbc:mysql://localhost:3306/bookstore]
         Database driver: MySQL Connector/J
         Database dialect: MySQLDialect
@@ -39,29 +37,94 @@ PS D:\DoAn\J2EE\VoTruongHuy_220801278>  & 'C:\Program Files\Eclipse Adoptium\jdk
         Pool: DataSourceConnectionProvider
         Minimum pool size: undefined/unknown
         Maximum pool size: undefined/unknown
-2026-02-05T22:46:37.585+07:00  INFO 6032 --- [  restartedMain] org.hibernate.orm.core            
-       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2026-02-05T22:46:37.663+07:00  INFO 6032 --- [  restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2026-02-05T22:46:37.760+07:00  INFO 6032 --- [  restartedMain] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
-2026-02-05T22:46:38.919+07:00  INFO 6032 --- [  restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name userService
+2026-02-06T21:43:36.392+07:00  INFO 10196 --- [  restartedMain] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration) 
+2026-02-06T21:43:36.497+07:00  INFO 10196 --- [  restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-02-06T21:43:36.626+07:00  INFO 10196 --- [  restartedMain] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-02-06T21:43:38.066+07:00  INFO 10196 --- [  restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name userService
 =============== LOADED IMAGE PATH: file:///D:/DoAn/J2EE/VoTruongHuy_220801278/spring/uploads/ ===============
-2026-02-05T22:46:39.839+07:00  INFO 6032 --- [  restartedMain] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
-2026-02-05T22:46:39.925+07:00  INFO 6032 --- [  restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
-2026-02-05T22:46:39.935+07:00  INFO 6032 --- [  restartedMain] f.h.s.VoTruongHuy_2280601278Application  : Started VoTruongHuy_2280601278Application in 7.286 seconds (process running for 8.074)  
-2026-02-05T22:46:41.790+07:00  INFO 6032 --- [on(2)-127.0.0.1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2026-02-05T22:46:41.790+07:00  INFO 6032 --- [on(2)-127.0.0.1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2026-02-05T22:46:41.793+07:00  INFO 6032 --- [on(2)-127.0.0.1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
-2026-02-05T22:46:46.886+07:00  WARN 6032 --- [nio-8080-exec-4] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource d332170d-d3d3-4b89-a263-5a608a002105_%C4%90i%E1%BB%81u%20tra%20t%E1%BA%A5n%20c%C3%B4ng.jpg for request '/images/books/d332170d-d3d3-4b89-a263-5a608a002105_%C4%90i%E1%BB%81u%20tra%20t%E1%BA%A5n%20c%C3%B4ng.jpg'.]
-2026-02-05T22:46:46.886+07:00  WARN 6032 --- [nio-8080-exec-6] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource bc0b5a96-6fc4-4bd1-9fd2-480173d7e1a3_M%E1%BA%A1ng%20m%C3%A1y%20t%C3%ADnh%20n%C3%A2ng%20cao.jpg for request '/images/books/bc0b5a96-6fc4-4bd1-9fd2-480173d7e1a3_M%E1%BA%A1ng%20m%C3%A1y%20t%C3%ADnh%20n%C3%A2ng%20cao.jpg'.]
-2026-02-05T22:46:46.886+07:00  WARN 6032 --- [nio-8080-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource 53a0295d-129b-4e4a-bfb4-b3f025e315ca_C%C6%A1%20s%E1%BB%9F%20d%E1%BB%AF%20li%E1%BB%87u%20ph%C3%A2n%20t%C3%A1n.jpg for request '/images/books/53a0295d-129b-4e4a-bfb4-b3f025e315ca_C%C6%A1%20s%E1%BB%9F%20d%E1%BB%AF%20li%E1%BB%87u%20ph%C3%A2n%20t%C3%A1n.jpg'.]
-2026-02-05T22:46:46.886+07:00  WARN 6032 --- [nio-8080-exec-1] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource fbaa8c29-806e-487f-9a00-dc599bd6b35f_L%E1%BA%ADp%20tr%C3%ACnh%20Web%20String%20Framework.jpg for request '/images/books/fbaa8c29-806e-487f-9a00-dc599bd6b35f_L%E1%BA%ADp%20tr%C3%ACnh%20Web%20String%20Framework.jpg'.]
-2026-02-05T22:46:46.916+07:00  WARN 6032 --- [io-8080-exec-10] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource 0cbe5ff4-e07d-4b1b-a7a3-dd266fb6ab0c_B%C3%AD%20ki%E1%BA%BFp%20TFT%20th%C3%A1ch%20%C4%91%E1%BA%A5u.jpg for request '/images/books/0cbe5ff4-e07d-4b1b-a7a3-dd266fb6ab0c_B%C3%AD%20ki%E1%BA%BFp%20TFT%20th%C3%A1ch%20%C4%91%E1%BA%A5u.jpg'.]
-2026-02-05T22:46:46.916+07:00  WARN 6032 --- [nio-8080-exec-5] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource 77305f8c-9f55-4c60-a99f-d139e2af5f01_Ph%C3%A2n%20t%C3%ADch%20d%E1%BB%AF%20li%E1%BB%87u%20truy%E1%BB%81n%20th%C3%B4ng%20x%C3%A3%20h%E1%BB%99i.jpg for request '/images/books/77305f8c-9f55-4c60-a99f-d139e2af5f01_Ph%C3%A2n%20t%C3%ADch%20d%E1%BB%AF%20li%E1%BB%87u%20truy%E1%BB%81n%20th%C3%B4ng%20x%C3%A3%20h%E1%BB%99i.jpg'.]
-2026-02-05T22:46:46.916+07:00  WARN 6032 --- [nio-8080-exec-8] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource c119d78a-9254-44e2-9ed2-6cc6529ed6f2_L%E1%BA%ADp%20tr%C3%ACnh%20java.jpg for request '/images/books/c119d78a-9254-44e2-9ed2-6cc6529ed6f2_L%E1%BA%ADp%20tr%C3%ACnh%20java.jpg'.]
-2026-02-05T22:46:55.945+07:00  WARN 6032 --- [nio-8080-exec-9] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource fbaa8c29-806e-487f-9a00-dc599bd6b35f_L%E1%BA%ADp%20tr%C3%ACnh%20Web%20String%20Framework.jpg for request '/images/books/fbaa8c29-806e-487f-9a00-dc599bd6b35f_L%E1%BA%ADp%20tr%C3%ACnh%20Web%20String%20Framework.jpg'.]
-2026-02-05T22:46:55.946+07:00  WARN 6032 --- [nio-8080-exec-3] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource 53a0295d-129b-4e4a-bfb4-b3f025e315ca_C%C6%A1%20s%E1%BB%9F%20d%E1%BB%AF%20li%E1%BB%87u%20ph%C3%A2n%20t%C3%A1n.jpg for request '/images/books/53a0295d-129b-4e4a-bfb4-b3f025e315ca_C%C6%A1%20s%E1%BB%9F%20d%E1%BB%AF%20li%E1%BB%87u%20ph%C3%A2n%20t%C3%A1n.jpg'.]
-2026-02-05T22:46:55.947+07:00  WARN 6032 --- [nio-8080-exec-6] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource d332170d-d3d3-4b89-a263-5a608a002105_%C4%90i%E1%BB%81u%20tra%20t%E1%BA%A5n%20c%C3%B4ng.jpg for request '/images/books/d332170d-d3d3-4b89-a263-5a608a002105_%C4%90i%E1%BB%81u%20tra%20t%E1%BA%A5n%20c%C3%B4ng.jpg'.]
-2026-02-05T22:46:55.950+07:00  WARN 6032 --- [nio-8080-exec-7] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource bc0b5a96-6fc4-4bd1-9fd2-480173d7e1a3_M%E1%BA%A1ng%20m%C3%A1y%20t%C3%ADnh%20n%C3%A2ng%20cao.jpg for request '/images/books/bc0b5a96-6fc4-4bd1-9fd2-480173d7e1a3_M%E1%BA%A1ng%20m%C3%A1y%20t%C3%ADnh%20n%C3%A2ng%20cao.jpg'.]
-2026-02-05T22:46:55.955+07:00  WARN 6032 --- [nio-8080-exec-1] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource 77305f8c-9f55-4c60-a99f-d139e2af5f01_Ph%C3%A2n%20t%C3%ADch%20d%E1%BB%AF%20li%E1%BB%87u%20truy%E1%BB%81n%20th%C3%B4ng%20x%C3%A3%20h%E1%BB%99i.jpg for request '/images/books/77305f8c-9f55-4c60-a99f-d139e2af5f01_Ph%C3%A2n%20t%C3%ADch%20d%E1%BB%AF%20li%E1%BB%87u%20truy%E1%BB%81n%20th%C3%B4ng%20x%C3%A3%20h%E1%BB%99i.jpg'.]
-2026-02-05T22:46:55.965+07:00  WARN 6032 --- [nio-8080-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource c119d78a-9254-44e2-9ed2-6cc6529ed6f2_L%E1%BA%ADp%20tr%C3%ACnh%20java.jpg for request '/images/books/c119d78a-9254-44e2-9ed2-6cc6529ed6f2_L%E1%BA%ADp%20tr%C3%ACnh%20java.jpg'.]
-2026-02-05T22:46:55.968+07:00  WARN 6032 --- [nio-8080-exec-8] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.web.servlet.resource.NoResourceFoundException: No static resource 0cbe5ff4-e07d-4b1b-a7a3-dd266fb6ab0c_B%C3%AD%20ki%E1%BA%BFp%20TFT%20th%C3%A1ch%20%C4%91%E1%BA%A5u.jpg for request '/images/books/0cbe5ff4-e07d-4b1b-a7a3-dd266fb6ab0c_B%C3%AD%20ki%E1%BA%BFp%20TFT%20th%C3%A1ch%20%C4%91%E1%BA%A5u.jpg'.]
+2026-02-06T21:43:39.118+07:00  INFO 10196 --- [  restartedMain] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+2026-02-06T21:43:39.210+07:00  INFO 10196 --- [  restartedMain] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-02-06T21:43:39.223+07:00  INFO 10196 --- [  restartedMain] f.h.s.VoTruongHuy_2280601278Application  : Started VoTruongHuy_2280601278Application in 8.787 seconds (process running for 9.676)
+2026-02-06T21:43:39.623+07:00  INFO 10196 --- [on(2)-127.0.0.1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-02-06T21:43:39.623+07:00  INFO 10196 --- [on(2)-127.0.0.1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-02-06T21:43:39.626+07:00  INFO 10196 --- [on(2)-127.0.0.1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 3 ms
+2026-02-06T21:43:52.228+07:00 ERROR 10196 --- [nio-8080-exec-7] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception
+
+java.lang.ClassCastException: class org.springframework.security.oauth2.core.user.DefaultOAuth2User cannot be cast to class org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser (org.springframework.security.oauth2.core.user.DefaultOAuth2User and org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser are in unnamed module of loader 'app')
+        at fit.hutech.spring.utils.SecurityConfig.lambda$6(SecurityConfig.java:94) ~[classes/:na]
+        at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.successfulAuthentication(AbstractAuthenticationProcessingFilter.java:405) ~[spring-security-web-7.0.2.jar:7.0.2]
+        at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:280) ~[spring-security-web-7.0.2.jar:7.0.2]
+        at org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter.doFilter(AbstractAuthenticationProcessingFilter.java:239) ~[spring-security-web-7.0.2.jar:7.0.2]
+        at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:244) ~[spring-security-web-7.0.2.jar:7.0.2]
+        at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:231) ~[spring-security-web-7.0.2.jar:7.0.2]
+        at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:141) ~[spring-security-web-7.0.2.jar:7.0.2]
+        at org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter.doFilterInternal(OAuth2AuthorizationRequestRedirectFilter.java:195) ~[spring-security-oauth2-client-7.0.2.jar:7.0.2]       
+        at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.3.jar:7.0.3]
+        at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:244) ~[spring-security-web-7.0.2.jar:7.0.2]
+        at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:231) ~[spring-security-web-7.0.2.jar:7.0.2]
+        at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:141) ~[spring-security-web-7.0.2.jar:7.0.2]
+        at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:110) ~[spring-security-web-7.0.2.jar:7.0.2]
+        at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:96) ~[spring-security-web-7.0.2.jar:7.0.2]
+        at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:244) ~[spring-security-web-7.0.2.jar:7.0.2]
+        at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:231) ~[spring-security-web-7.0.2.jar:7.0.2]
+        at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:141) ~[spring-security-web-7.0.2.jar:7.0.2]
+        at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90) ~[spring-security-web-7.0.2.jar:7.0.2]
+        at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75) ~[spring-security-web-7.0.2.jar:7.0.2]
+        at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.3.jar:7.0.3]
+        at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:244) ~[spring-security-web-7.0.2.jar:7.0.2]
+        at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:231) ~[spring-security-web-7.0.2.jar:7.0.2]
+        at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:141) ~[spring-security-web-7.0.2.jar:7.0.2]
+        at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:82) ~[spring-security-web-7.0.2.jar:7.0.2]
+        at org.springframework.security.web.context.SecurityContextHolderFilter.doFilter(SecurityContextHolderFilter.java:69) ~[spring-security-web-7.0.2.jar:7.0.2]
+        at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:244) ~[spring-security-web-7.0.2.jar:7.0.2]
+        at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:231) ~[spring-security-web-7.0.2.jar:7.0.2]
+        at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:141) ~[spring-security-web-7.0.2.jar:7.0.2]
+        at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:62) ~[spring-security-web-7.0.2.jar:7.0.2]
+        at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.3.jar:7.0.3]
+        at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:244) ~[spring-security-web-7.0.2.jar:7.0.2]
+        at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:231) ~[spring-security-web-7.0.2.jar:7.0.2]
+        at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:141) ~[spring-security-web-7.0.2.jar:7.0.2]
+        at org.springframework.security.web.session.DisableEncodeUrlFilter.doFilterInternal(DisableEncodeUrlFilter.java:42) ~[spring-security-web-7.0.2.jar:7.0.2]
+        at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.3.jar:7.0.3]
+        at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.wrapFilter(ObservationFilterChainDecorator.java:244) ~[spring-security-web-7.0.2.jar:7.0.2]
+        at org.springframework.security.web.ObservationFilterChainDecorator$AroundFilterObservation$SimpleAroundFilterObservation.lambda$wrap$0(ObservationFilterChainDecorator.java:337) ~[spring-security-web-7.0.2.jar:7.0.2]
+        at org.springframework.security.web.ObservationFilterChainDecorator$ObservationFilter.doFilter(ObservationFilterChainDecorator.java:228) ~[spring-security-web-7.0.2.jar:7.0.2]
+        at org.springframework.security.web.ObservationFilterChainDecorator$VirtualFilterChain.doFilter(ObservationFilterChainDecorator.java:141) ~[spring-security-web-7.0.2.jar:7.0.2]
+        at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:237) ~[spring-security-web-7.0.2.jar:7.0.2]
+        at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:195) ~[spring-security-web-7.0.2.jar:7.0.2]
+        at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113) ~[spring-web-7.0.3.jar:7.0.3]
+        at org.springframework.web.filter.ServletRequestPathFilter.doFilter(ServletRequestPathFilter.java:52) ~[spring-web-7.0.3.jar:7.0.3]
+        at org.springframework.web.filter.CompositeFilter$VirtualFilterChain.doFilter(CompositeFilter.java:113) ~[spring-web-7.0.3.jar:7.0.3]
+        at org.springframework.web.filter.CompositeFilter.doFilter(CompositeFilter.java:74) ~[spring-web-7.0.3.jar:7.0.3]
+        at org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration$CompositeFilterChainProxy.doFilter(WebSecurityConfiguration.java:317) ~[spring-security-config-7.0.2.jar:7.0.2]
+        at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:355) ~[spring-web-7.0.3.jar:7.0.3]
+        at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:272) ~[spring-web-7.0.3.jar:7.0.3]
+        at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.15.jar:11.0.15]
+        at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-7.0.3.jar:7.0.3]
+        at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.3.jar:7.0.3]
+        at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.15.jar:11.0.15]
+        at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-7.0.3.jar:7.0.3]
+        at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.3.jar:7.0.3]
+        at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.15.jar:11.0.15]
+        at org.springframework.web.filter.ServerHttpObservationFilter.doFilterInternal(ServerHttpObservationFilter.java:110) ~[spring-web-7.0.3.jar:7.0.3]
+        at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.3.jar:7.0.3]
+        at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.15.jar:11.0.15]
+        at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:199) ~[spring-web-7.0.3.jar:7.0.3]
+        at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.3.jar:7.0.3]
+        at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.15.jar:11.0.15]
+        at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:165) ~[tomcat-embed-core-11.0.15.jar:11.0.15]
+        at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:77) ~[tomcat-embed-core-11.0.15.jar:11.0.15]
+        at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482) ~[tomcat-embed-core-11.0.15.jar:11.0.15]
+        at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:113) ~[tomcat-embed-core-11.0.15.jar:11.0.15]
+        at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:83) ~[tomcat-embed-core-11.0.15.jar:11.0.15]
+        at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:72) ~[tomcat-embed-core-11.0.15.jar:11.0.15]
+        at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:341) ~[tomcat-embed-core-11.0.15.jar:11.0.15]
+        at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:397) ~[tomcat-embed-core-11.0.15.jar:11.0.15]
+        at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-11.0.15.jar:11.0.15]
+        at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903) ~[tomcat-embed-core-11.0.15.jar:11.0.15]
+        at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1778) ~[tomcat-embed-core-11.0.15.jar:11.0.15]
+        at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-11.0.15.jar:11.0.15]
+        at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:946) ~[tomcat-embed-core-11.0.15.jar:11.0.15]
+        at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:480) ~[tomcat-embed-core-11.0.15.jar:11.0.15]
+        at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:57) ~[tomcat-embed-core-11.0.15.jar:11.0.15]
+        at java.base/java.lang.Thread.run(Thread.java:1583) ~[na:na]
