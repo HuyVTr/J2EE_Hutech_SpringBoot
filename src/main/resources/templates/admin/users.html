@@ -24,6 +24,7 @@
                             <th>ID</th>
                             <th>Tên người dùng</th>
                             <th>Email</th>
+                            <th>Nền tảng</th>
                             <th>Vai trò hiện tại</th>
                             <th>Đổi vai trò</th>
                         </tr>
@@ -33,6 +34,15 @@
                             <td th:text="'#' + ${user.id}">#1</td>
                             <td th:text="${user.username}">user</td>
                             <td th:text="${user.email}">user@example.com</td>
+                            <td>
+                                <span class="badge bg-light text-dark border">
+                                    <i class="fab me-1"
+                                        th:classappend="${user.provider == 'FACEBOOK' ? 'fa-facebook text-primary' : 
+                                                        (user.provider == 'GOOGLE' ? 'fa-google text-danger' : 
+                                                        (user.provider == 'GITHUB' ? 'fa-github text-dark' : 'fa-user-circle text-secondary'))}"></i>
+                                    <span th:text="${user.provider != null ? user.provider : 'LOCAL'}">LOCAL</span>
+                                </span>
+                            </td>
                             <td>
                                 <span th:each="role : ${user.roles}" class="badge rounded-pill me-1"
                                     th:classappend="${role.name == 'ADMIN' ? 'bg-danger' : (role.name == 'STAFF' ? 'bg-warning text-dark' : 'bg-success')}"

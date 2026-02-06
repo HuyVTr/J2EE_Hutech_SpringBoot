@@ -25,8 +25,14 @@
                 <div>
                     <span class="fw-bold">Mã đơn hàng: #<span th:text="${order.id}"></span></span>
                     <span class="text-muted mx-2">|</span>
-                    <span class="text-muted"
+                    <span class="text-muted" <span class="text-muted"
                         th:text="${#temporals.format(order.orderDate, 'dd-MM-yyyy HH:mm')}">Date</span>
+                    <span class="text-muted mx-2">|</span>
+                    <span class="badge bg-light text-dark border">
+                        <i class="fas"
+                            th:classappend="${order.paymentMethod == 'MOMO' ? 'fa-wallet text-danger' : (order.paymentMethod == 'VNPAY' ? 'fa-qrcode text-primary' : 'fa-money-bill-wave text-success')}"></i>
+                        <span th:text="${order.paymentMethod != null ? order.paymentMethod : 'COD'}">COD</span>
+                    </span>
                 </div>
                 <div>
                     <!-- Badge trạng thái -->

@@ -25,6 +25,7 @@
                             <th>Ngày đặt</th>
                             <th>Khách hàng</th>
                             <th>Địa chỉ</th>
+                            <th>Thanh toán</th>
                             <th>Tổng tiền</th>
                             <th>Trạng thái</th>
                             <th style="min-width: 180px;">Hành động</th>
@@ -37,9 +38,16 @@
                             <td>
                                 <div class="fw-bold" th:text="${order.user != null ? order.user.username : 'Guest'}">
                                     User</div>
+                                <div class="small text-secondary"
+                                    th:if="${order.user != null and order.user.fullName != null}"
+                                    th:text="${order.user.fullName}">Full Name</div>
                                 <div class="small text-muted" th:text="${order.phoneNumber}">0909090909</div>
                             </td>
                             <td class="small" style="max-width: 200px;" th:text="${order.shippingAddress}">Address
+                            </td>
+                            <td>
+                                <span class="badge bg-light text-dark border"
+                                    th:text="${order.paymentMethod != null ? order.paymentMethod : 'COD'}">COD</span>
                             </td>
                             <td class="text-danger fw-bold"
                                 th:text="${#numbers.formatDecimal(order.totalPrice, 0, 'POINT', 0, 'COMMA')} + ' VNĐ'">

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import fit.hutech.spring.daos.Item;
+import fit.hutech.spring.entities.User;
 import fit.hutech.spring.services.BookService;
 import fit.hutech.spring.services.CartService;
 import fit.hutech.spring.services.UserService;
@@ -84,8 +85,20 @@ public class CartController {
 
         // Lấy thông tin user hiện tại
         if (authentication != null && authentication.isAuthenticated()) {
-            String username = authentication.getName();
-            var user = userService.findByUsername(username).orElse(null);
+            User user = null;
+            if (authentication instanceof org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken oauthToken) {
+                String email = oauthToken.getPrincipal().getAttribute("email");
+                if (email != null)
+                    user = userService.findByEmail(email).orElse(null);
+                if (user == null) {
+                    String name = oauthToken.getPrincipal().getAttribute("name");
+                    if (name != null)
+                        user = userService.findByUsername(name).orElse(null);
+                }
+            } else {
+                user = userService.findByUsername(authentication.getName()).orElse(null);
+            }
+
             if (user != null) {
                 model.addAttribute("user", user); // Truyền user xuống view
             }
