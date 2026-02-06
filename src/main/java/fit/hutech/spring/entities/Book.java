@@ -60,6 +60,11 @@ public class Book {
     @Column(name = "image_path")
     private String imagePath;
 
+    @Column(name = "quantity")
+    @jakarta.validation.constraints.Min(value = 0, message = "Quantity must be at least 0")
+    @Builder.Default
+    private Integer quantity = 0;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     @ValidCategoryId

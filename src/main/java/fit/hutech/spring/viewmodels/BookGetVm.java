@@ -13,6 +13,7 @@ public class BookGetVm {
     private Double price;
     private String category;
     private String imagePath;
+    private Integer quantity;
 
     public static BookGetVm from(Book book) {
         return BookGetVm.builder()
@@ -22,6 +23,7 @@ public class BookGetVm {
                 .price(book.getPrice())
                 .category(book.getCategory() != null ? book.getCategory().getName() : null)
                 .imagePath(book.getImagePath())
+                .quantity(book.getQuantity() != null ? book.getQuantity() : 0)
                 .build();
     }
 }

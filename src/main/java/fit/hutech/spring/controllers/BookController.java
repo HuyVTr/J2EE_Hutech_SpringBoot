@@ -168,4 +168,15 @@ public class BookController {
         Files.copy(image.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
         return filename;
     }
+
+    // === API CẬP NHẬT SỐ LƯỢNG (STAFF ONLY) ===
+    @PostMapping("/update-quantity")
+    public String updateBookQuantity(@RequestParam Long bookId, @RequestParam Integer changeAmount) {
+        try {
+            bookService.updateBookQuantity(bookId, changeAmount);
+        } catch (IllegalArgumentException e) {
+            return "redirect:/books?error=" + e.getMessage();
+        }
+        return "redirect:/books";
+    }
 }

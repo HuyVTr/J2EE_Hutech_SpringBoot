@@ -35,14 +35,26 @@ $(document).ready(function () {
                     }
 
                     let actionButtons = '';
-                    // Chỉ hiển thị nút Edit/Delete nếu là ADMIN
-                    if (typeof isAdmin !== 'undefined' && isAdmin) {
-                        actionButtons += '<a href="/books/edit/' + item.id + '" class="btn btn-outline-primary action-btn">Sửa</a>';
-                        actionButtons += '<button onclick="apiDeleteBook(' + item.id + ')" class="btn btn-outline-danger action-btn">Xóa</button>';
+
+                    // Check quyền quản lý (Admin hoặc Staff) - hỗ trợ cả biến cũ isAdmin và mới canManage
+                    let isManager = (typeof canManage !== 'undefined' && canManage) || (typeof isAdmin !== 'undefined' && isAdmin);
+
+                    if (isManager) {
+                        // Nút Kho
+                        actionButtons += `<button onclick="openStockModal(${item.id}, '${item.title.replace(/'/g, "\\'")}', ${item.quantity || 0})" class="btn btn-outline-warning action-btn me-1"><i class="bi bi-box-seam"></i> Kho</button>`;
+                        // Nút Sửa
+                        actionButtons += '<a href="/books/edit/' + item.id + '" class="btn btn-outline-primary action-btn me-1">Sửa</a>';
+                        // Nút Xóa
+                        actionButtons += '<button onclick="apiDeleteBook(' + item.id + ')" class="btn btn-outline-danger action-btn me-1">Xóa</button>';
                     }
-                    // Nút Add to Cart hiển thị cho tất cả
+
+                    // Nút Chi tiết (Ai cũng thấy)
                     actionButtons += '<a href="/books/detail/' + item.id + '" class="btn btn-info action-btn text-white me-1">Chi tiết</a>';
-                    actionButtons += '<a href="/cart/add/' + item.id + '" class="btn btn-success action-btn text-white">Thêm vào giỏ</a>';
+
+                    // Nút Thêm vào giỏ (Chỉ User thường hoặc Khách thấy)
+                    if (!isManager) {
+                        actionButtons += '<a href="/cart/add/' + item.id + '" class="btn btn-success action-btn text-white">Thêm vào giỏ</a>';
+                    }
 
                     trHTML += '<tr id="book-' + item.id + '">' +
                         '<td>' + item.id + '</td>' +
@@ -50,6 +62,7 @@ $(document).ready(function () {
                         '<td>' + (item.imagePath ? '<img src="' + item.imagePath + '" style="max-height: 50px;" />' : '') + '</td>' +
                         '<td>' + item.author + '</td>' +
                         '<td>' + new Intl.NumberFormat('vi-VN').format(item.price) + ' VNĐ</td>' +
+                        '<td>' + (item.quantity !== null ? item.quantity : 0) + '</td>' +
                         '<td>' + categoryName + '</td>' +
                         '<td>' + actionButtons + '</td>' +
                         '</tr>';
@@ -83,4 +96,16 @@ function apiDeleteBook(id) {
             }
         });
     }
+}
+
+// Hàm mở Modal quản lý kho
+function openStockModal(id, title, quantity) {
+    $('#stockBookId').val(id);
+    $('#stockBookTitle').val(title);
+    $('#currentStock').val(quantity);
+    $('#changeAmount').val(''); // Reset input
+
+    // Sử dụng Bootstrap Modal API
+    var stockModal = new bootstrap.Modal(document.getElementById('stockModal'));
+    stockModal.show();
 }

@@ -42,6 +42,7 @@
                             <th>Ảnh</th>
                             <th>Tác giả</th>
                             <th>Giá</th>
+                            <th>Số lượng</th>
                             <th>Danh mục</th>
                             <th>Hành động</th>
                         </tr>
@@ -54,11 +55,46 @@
         </div>
     </div>
 
+    <!-- Modal Nhập/Xuất Kho -->
+    <div class="modal fade" id="stockModal" tabindex="-1" aria-labelledby="stockModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="stockForm" action="/books/update-quantity" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="stockModalLabel">Quản lý kho hàng</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="stockBookId" name="bookId">
+                        <div class="mb-3">
+                            <label class="form-label">Tên sách:</label>
+                            <input type="text" class="form-control" id="stockBookTitle" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Tồn kho hiện tại:</label>
+                            <input type="text" class="form-control" id="currentStock" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="changeAmount" class="form-label">Số lượng thay đổi (Dương: Nhập, Âm:
+                                Xuất):</label>
+                            <input type="number" class="form-control" id="changeAmount" name="changeAmount" required>
+                            <div class="form-text">Ví dụ: Nhập 10 để thêm 10 cuốn. Nhập -5 để giảm 5 cuốn.</div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <button type="submit" class="btn btn-primary">Cập nhật kho</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <th:block th:replace="~{layout::footer}"></th:block>
 
     <script th:src="@{/js/jquery-3.7.0.min.js}"></script>
     <script th:inline="javascript">
-        var isAdmin = /*[[${#authorization.expression("hasAuthority('ADMIN')")}]]*/ false;
+        var canManage = /*[[${#authorization.expression("hasAnyAuthority('ADMIN', 'STAFF')")}]]*/ false;
     </script>
     <script th:src="@{/js/list.js}"></script>
 </body>

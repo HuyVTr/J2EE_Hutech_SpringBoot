@@ -66,4 +66,19 @@ public class BookService {
                 .toList();
     }
     // ===============================================================
+
+    // === Cập nhật số lượng sách (Nhập/Xuất kho) ===
+    public void updateBookQuantity(Long bookId, Integer changeAmount) {
+        Book book = bookRepository.findById(bookId)
+                .orElseThrow(() -> new IllegalArgumentException("Book not found with id: " + bookId));
+
+        int newQuantity = (book.getQuantity() != null ? book.getQuantity() : 0) + changeAmount;
+
+        if (newQuantity < 0) {
+            throw new IllegalArgumentException("Số lượng tồn kho không đủ để xuất! Tồn tại: " + book.getQuantity());
+        }
+
+        book.setQuantity(newQuantity);
+        bookRepository.save(book);
+    }
 }
