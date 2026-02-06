@@ -51,6 +51,9 @@ public class Order {
     @Column(name = "note")
     private String note;
 
+    @Column(name = "payment_method")
+    private String paymentMethod;
+
     @Column(name = "status")
     private String status; // PENDING, SHIPPING, DELIVERED, CANCELLED
 

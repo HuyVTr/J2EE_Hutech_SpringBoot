@@ -61,7 +61,7 @@ public class CartService {
     //
     // === PHƯƠNG THỨC LƯU GIỎ HÀNG (SAVE ORDER) ===
     public void saveOrder(@NotNull HttpSession session, String receiverName, String phoneNumber, String address,
-            String note) {
+            String note, String paymentMethod) {
         var cart = getCart(session);
         if (cart.getCartItems().isEmpty())
             return;
@@ -73,6 +73,7 @@ public class CartService {
         order.setShippingAddress(address);
         order.setPhoneNumber(phoneNumber);
         order.setNote(note);
+        order.setPaymentMethod(paymentMethod);
         order.setStatus("PENDING");
 
         // Gán User hiện tại cho Order

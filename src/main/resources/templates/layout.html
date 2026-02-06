@@ -53,8 +53,8 @@
                     <!-- 3. RIGHT: ACTIONS (CART + AUTH) -->
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center gap-3">
 
-                        <!-- Cart -->
-                        <li class="nav-item" sec:authorize="hasAnyAuthority('ADMIN', 'USER', 'STAFF')">
+                        <!-- Cart (Only for USER) -->
+                        <li class="nav-item" sec:authorize="hasAuthority('USER')">
                             <a class="nav-link position-relative btn btn-light rounded-circle p-2 d-flex justify-content-center align-items-center"
                                 style="width: 40px; height: 40px;" href="/cart" title="Giỏ hàng">
                                 <i class="fas fa-shopping-cart text-primary"></i>
@@ -77,6 +77,10 @@
                                 <li>
                                     <h6 class="dropdown-header text-uppercase small fw-bold text-muted">Tài khoản</h6>
                                 </li>
+                                <!-- Profile Link (New) -->
+                                <li><a class="dropdown-item" href="/profile"><i
+                                            class="fas fa-id-card me-2 text-muted"></i> Hồ sơ cá nhân</a></li>
+
                                 <li sec:authorize="hasAuthority('USER')"><a class="dropdown-item"
                                         href="/orders/history"><i class="fas fa-history me-2 text-muted"></i> Lịch sử
                                         đơn hàng</a></li>

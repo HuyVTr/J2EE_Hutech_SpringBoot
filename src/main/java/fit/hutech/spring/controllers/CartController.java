@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import fit.hutech.spring.daos.Item;
 import fit.hutech.spring.services.BookService;
 import fit.hutech.spring.services.CartService;
+import fit.hutech.spring.services.UserService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
@@ -69,8 +70,11 @@ public class CartController {
 
     // === BỔ SUNG: Phương thức Checkout từ ảnh image_e6b97e.png ===
     // === PHƯƠNG THỨC CHECKOUT & SUBMIT ORDER ===
+    private final UserService userService;
+
     @GetMapping("/checkout")
-    public String checkout(HttpSession session, Model model) {
+    public String checkout(HttpSession session, Model model,
+            org.springframework.security.core.Authentication authentication) {
         var cart = cartService.getCart(session);
         if (cart.getCartItems().isEmpty()) {
             return "redirect:/cart";
@@ -78,9 +82,14 @@ public class CartController {
         model.addAttribute("cart", cart);
         model.addAttribute("totalPrice", cartService.getSumPrice(session));
 
-        // Lấy thông tin user hiện tại để điền sẵn form
-        // (Logic lấy user có thể inject UserService, tạm thời để trống hoặc lấy từ
-        // Authentication nếu cần)
+        // Lấy thông tin user hiện tại
+        if (authentication != null && authentication.isAuthenticated()) {
+            String username = authentication.getName();
+            var user = userService.findByUsername(username).orElse(null);
+            if (user != null) {
+                model.addAttribute("user", user); // Truyền user xuống view
+            }
+        }
         return "book/checkout";
     }
 
@@ -89,9 +98,15 @@ public class CartController {
             @org.springframework.web.bind.annotation.RequestParam String receiverName,
             @org.springframework.web.bind.annotation.RequestParam String phoneNumber,
             @org.springframework.web.bind.annotation.RequestParam String address,
-            @org.springframework.web.bind.annotation.RequestParam(required = false) String note) {
-        cartService.saveOrder(session, receiverName, phoneNumber, address, note);
-        return "redirect:/books"; // Hoặc redirect sang trang "Cảm ơn/Thông báo thành công"
+            @org.springframework.web.bind.annotation.RequestParam(required = false) String note,
+            @org.springframework.web.bind.annotation.RequestParam(defaultValue = "COD") String paymentMethod) {
+        cartService.saveOrder(session, receiverName, phoneNumber, address, note, paymentMethod);
+        return "redirect:/cart/success";
+    }
+
+    @GetMapping("/success")
+    public String orderSuccess() {
+        return "book/order_success";
     }
     // ===========================================
     // =============================================================
