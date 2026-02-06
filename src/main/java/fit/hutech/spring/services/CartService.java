@@ -1,5 +1,6 @@
 package fit.hutech.spring.services;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 import org.springframework.security.core.Authentication;
@@ -11,7 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fit.hutech.spring.daos.Cart;
 import fit.hutech.spring.daos.Item;
+import fit.hutech.spring.entities.ShoppingCart;
+import fit.hutech.spring.entities.ShoppingCartItem;
+import fit.hutech.spring.entities.User;
 import fit.hutech.spring.repositories.IBookRepository;
+import fit.hutech.spring.repositories.IShoppingCartRepository;
 import fit.hutech.spring.repositories.IUserRepository;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.constraints.NotNull;
@@ -24,11 +29,70 @@ public class CartService {
 
     private static final String CART_SESSION_KEY = "cart";
 
-    // Inject các Repository cần thiết để thao tác với DB
     private final IBookRepository bookRepository;
     private final IUserRepository userRepository;
+    private final IShoppingCartRepository shoppingCartRepository;
+
+    // Inject ApplicationContext is generally bad practice, but kept for saveOrder
+    // consistency with previous code
+    // Better to inject Repos directly. Let's stick to injected repos if possible.
+    // However, saveOrder used context.getBean, I will refactor it to use injected
+    // fields if possible or keep context.
+    @org.springframework.beans.factory.annotation.Autowired
+    private org.springframework.context.ApplicationContext context;
+
+    private User getAuthenticatedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated() &&
+                !authentication.getPrincipal().equals("anonymousUser")) {
+            if (authentication instanceof OAuth2AuthenticationToken oauthToken) {
+                String email = oauthToken.getPrincipal().getAttribute("email");
+                if (email != null)
+                    return userRepository.findByEmail(email).orElse(null);
+                // Fallback to name if email is null (Github)
+                String name = oauthToken.getPrincipal().getAttribute("name"); // login
+                if (name == null)
+                    name = oauthToken.getPrincipal().getAttribute("login");
+                return userRepository.findByUsername(name).orElse(null);
+            } else {
+                return userRepository.findByUsername(authentication.getName()).orElse(null);
+            }
+        }
+        return null;
+    }
 
     public Cart getCart(@NotNull HttpSession session) {
+        User user = getAuthenticatedUser();
+
+        // 1. If User Logged In -> Load from DB
+        if (user != null) {
+            ShoppingCart entity = shoppingCartRepository.findByUserId(user.getId()).orElse(new ShoppingCart());
+            if (entity.getId() == null) {
+                entity.setUser(user);
+                entity.setItems(new ArrayList<>());
+                // Don't save yet, wait for update
+            }
+
+            // Map Entity -> DTO
+            Cart cartDTO = new Cart();
+            // Need to retrieve existing session cart to merge?
+            // For now, let's keep it simple: DB overrides Session.
+            // If we want merge, we should do it at login time (Handler).
+
+            if (entity.getItems() != null) {
+                for (ShoppingCartItem itemEntity : entity.getItems()) {
+                    cartDTO.addItems(new Item(
+                            itemEntity.getBook().getId(),
+                            itemEntity.getBook().getTitle(),
+                            itemEntity.getBook().getPrice(),
+                            itemEntity.getQuantity(),
+                            itemEntity.getBook().getImagePath()));
+                }
+            }
+            return cartDTO;
+        }
+
+        // 2. If Anonymous -> Session
         return Optional.ofNullable((Cart) session.getAttribute(CART_SESSION_KEY))
                 .orElseGet(() -> {
                     Cart cart = new Cart();
@@ -37,11 +101,50 @@ public class CartService {
                 });
     }
 
-    public void updateCart(@NotNull HttpSession session, Cart cart) {
-        session.setAttribute(CART_SESSION_KEY, cart);
+    public void updateCart(@NotNull HttpSession session, Cart cartDTO) {
+        User user = getAuthenticatedUser();
+
+        // 1. If User Logged In -> Save to DB
+        if (user != null) {
+            ShoppingCart entity = shoppingCartRepository.findByUserId(user.getId()).orElse(new ShoppingCart());
+            if (entity.getId() == null) {
+                entity.setUser(user);
+                entity = shoppingCartRepository.save(entity); // Save first to get ID
+            }
+
+            // Clear old items and add new items
+            // Note: Orphan Removal is enabled.
+            // But replacing the list reference might not work with Hibernate managed
+            // collection sometimes.
+            // Better to clear and add.
+            if (entity.getItems() == null)
+                entity.setItems(new ArrayList<>());
+            entity.getItems().clear();
+
+            for (Item itemDTO : cartDTO.getCartItems()) {
+                ShoppingCartItem itemEntity = new ShoppingCartItem();
+                itemEntity.setCart(entity);
+                itemEntity.setBook(bookRepository.findById(itemDTO.getBookId()).orElseThrow());
+                itemEntity.setQuantity(itemDTO.getQuantity());
+                entity.getItems().add(itemEntity);
+            }
+
+            shoppingCartRepository.save(entity);
+        }
+
+        // 2. Always update session (for immediate consistency during this request, or
+        // fallback)
+        session.setAttribute(CART_SESSION_KEY, cartDTO);
     }
 
     public void removeCart(@NotNull HttpSession session) {
+        User user = getAuthenticatedUser();
+        if (user != null) {
+            shoppingCartRepository.findByUserId(user.getId()).ifPresent(cart -> {
+                cart.getItems().clear();
+                shoppingCartRepository.save(cart);
+            });
+        }
         session.removeAttribute(CART_SESSION_KEY);
     }
 
@@ -57,9 +160,6 @@ public class CartService {
                 .sum();
     }
 
-    // === PHƯƠNG THỨC LƯU GIỎ HÀNG (SAVE CART) ===
-    //
-    // === PHƯƠNG THỨC LƯU GIỎ HÀNG (SAVE ORDER) ===
     public void saveOrder(@NotNull HttpSession session, String receiverName, String phoneNumber, String address,
             String note, String paymentMethod) {
         var cart = getCart(session);
@@ -77,15 +177,9 @@ public class CartService {
         order.setStatus("PENDING");
 
         // Gán User hiện tại cho Order
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated()) {
-            if (authentication instanceof OAuth2AuthenticationToken oauthToken) {
-                String email = oauthToken.getPrincipal().getAttribute("email");
-                userRepository.findByEmail(email).ifPresent(order::setUser);
-            } else {
-                userRepository.findByUsername(authentication.getName()).ifPresent(order::setUser);
-            }
-        }
+        User user = getAuthenticatedUser();
+        if (user != null)
+            order.setUser(user);
 
         // Lưu Order trước để có ID
         fit.hutech.spring.repositories.IOrderRepository orderRepository = context
@@ -111,9 +205,4 @@ public class CartService {
         // 3. Xóa giỏ hàng sau khi đã thanh toán thành công
         removeCart(session);
     }
-
-    // Helper để lấy ApplicationContext (tạm thời, tốt nhất là inject Repository ở
-    // trên)
-    @org.springframework.beans.factory.annotation.Autowired
-    private org.springframework.context.ApplicationContext context;
 }

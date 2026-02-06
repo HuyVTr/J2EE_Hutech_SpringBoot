@@ -51,6 +51,7 @@ public class CartController {
             @PathVariable Long id) {
         var cart = cartService.getCart(session);
         cart.removeItems(id);
+        cartService.updateCart(session, cart);
         return "redirect:/cart";
     }
 
@@ -60,7 +61,8 @@ public class CartController {
             @PathVariable int quantity) {
         var cart = cartService.getCart(session);
         cart.updateItems(id, quantity);
-        return "book/cart";
+        cartService.updateCart(session, cart);
+        return "redirect:/cart";
     }
 
     @GetMapping("/clearCart")

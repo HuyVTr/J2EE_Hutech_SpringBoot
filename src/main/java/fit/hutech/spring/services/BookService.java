@@ -1,7 +1,6 @@
 package fit.hutech.spring.services;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -35,14 +34,19 @@ public class BookService {
         Book existingBook = bookRepository.findById(book.getId())
                 .orElse(null);
 
-        Objects.requireNonNull(existingBook).setTitle(book.getTitle());
+        if (existingBook != null) {
+            existingBook.setTitle(book.getTitle());
+            existingBook.setAuthor(book.getAuthor());
+            existingBook.setPrice(book.getPrice());
+            existingBook.setCategory(book.getCategory());
 
-        existingBook.setAuthor(book.getAuthor());
-        existingBook.setPrice(book.getPrice());
-        existingBook.setCategory(book.getCategory());
-        existingBook.setImagePath(book.getImagePath());
+            // Chỉ cập nhật ảnh nếu có ảnh mới được cung cấp
+            if (book.getImagePath() != null && !book.getImagePath().isEmpty()) {
+                existingBook.setImagePath(book.getImagePath());
+            }
 
-        bookRepository.save(existingBook);
+            bookRepository.save(existingBook);
+        }
     }
 
     public void deleteBookById(Long id) {

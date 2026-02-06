@@ -57,7 +57,7 @@ public class Order {
     @Column(name = "status")
     private String status; // PENDING, SHIPPING, DELIVERED, CANCELLED
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = jakarta.persistence.FetchType.EAGER)
     @Builder.Default
     private List<OrderDetail> orderDetails = new ArrayList<>();
 }

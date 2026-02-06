@@ -7,4 +7,10 @@ import fit.hutech.spring.entities.OrderDetail;
 
 @Repository
 public interface IOrderDetailRepository extends JpaRepository<OrderDetail, Long> {
+
+    @org.springframework.data.jpa.repository.Query("SELECT new fit.hutech.spring.dtos.BookSalesDTO(d.book, SUM(d.quantity)) "
+            +
+            "FROM OrderDetail d GROUP BY d.book ORDER BY SUM(d.quantity) DESC")
+    java.util.List<fit.hutech.spring.dtos.BookSalesDTO> findTopSellingBooks(
+            org.springframework.data.domain.Pageable pageable);
 }
