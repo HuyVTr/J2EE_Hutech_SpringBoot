@@ -8,6 +8,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.UUID;
 
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -38,15 +39,22 @@ public class BookController {
             @NotNull Model model,
             @RequestParam(defaultValue = "0") Integer pageNo,
             @RequestParam(defaultValue = "20") Integer pageSize,
-            @RequestParam(defaultValue = "id") String sortBy) {
+            @RequestParam(defaultValue = "id") String sortBy,
+            Authentication authentication) {
 
         model.addAttribute("books", bookService.getAllBooks(pageNo, pageSize, sortBy));
         model.addAttribute("currentPage", pageNo);
         model.addAttribute("categories", categoryService.getAllCategories());
         long totalBooks = bookService.countAllBooks();
         model.addAttribute("totalPages", totalBooks > 0 ? (int) Math.ceil((double) totalBooks / pageSize) - 1 : 0);
+        model.addAttribute("keyword", "");
 
-        return "book/list";
+        if (authentication != null && authentication.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ADMIN") || a.getAuthority().equals("STAFF"))) {
+            return "book/manage"; // Giao diện quản lý cũ
+        }
+
+        return "book/list"; // Giao diện người dùng mới
     }
 
     // === BỔ SUNG: PHƯƠNG THỨC SEARCH (THEO ẢNH) ===
@@ -56,7 +64,8 @@ public class BookController {
             @RequestParam String keyword,
             @RequestParam(defaultValue = "0") Integer pageNo,
             @RequestParam(defaultValue = "20") Integer pageSize,
-            @RequestParam(defaultValue = "id") String sortBy) {
+            @RequestParam(defaultValue = "id") String sortBy,
+            Authentication authentication) {
 
         // Tối ưu: Gọi service 1 lần và lưu vào biến thay vì gọi 2 lần
         var searchResults = bookService.searchBook(keyword);
@@ -68,6 +77,13 @@ public class BookController {
                 totalSearchItems > 0 ? (int) Math.ceil((double) totalSearchItems / pageSize) - 1 : 0);
 
         model.addAttribute("categories", categoryService.getAllCategories());
+        model.addAttribute("keyword", keyword);
+
+        if (authentication != null && authentication.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ADMIN") || a.getAuthority().equals("STAFF"))) {
+            return "book/manage";
+        }
+
         return "book/list";
     }
     // ===============================================
